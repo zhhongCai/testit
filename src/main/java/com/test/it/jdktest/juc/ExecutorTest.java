@@ -1,4 +1,4 @@
-package com.caizh.jdktest.juc;
+package com.test.it.jdktest.juc;
 
 import java.util.concurrent.*;
 

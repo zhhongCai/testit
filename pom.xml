@@ -14,6 +14,7 @@
         <jackson.version>1.9.4</jackson.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <light.version>3.0-RELEASE</light.version>
     </properties>
 
   <dependencies>
@@ -24,6 +25,31 @@
       <scope>test</scope>
     </dependency>
 
+      <dependency>
+          <groupId>com.chinanetcenter.light</groupId>
+          <artifactId>app</artifactId>
+          <version>${light.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>com.chinanetcenter.light</groupId>
+          <artifactId>dao</artifactId>
+          <version>${light.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>com.chinanetcenter.light</groupId>
+          <artifactId>util</artifactId>
+          <version>${light.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>com.chinanetcenter.light</groupId>
+          <artifactId>web</artifactId>
+          <version>${light.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>com.chinanetcenter.light</groupId>
+          <artifactId>mq</artifactId>
+          <version>${light.version}</version>
+      </dependency>
       <!--apache common -->
       <dependency>
           <groupId>commons-lang</groupId>
