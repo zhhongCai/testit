@@ -15,7 +15,6 @@ public class ThreadLocalTest {
         Thread thread2 = new Thread(new EchoRunnable());
         Thread thread3 = new Thread(new EchoRunnable());
 
-        thread1
     }
 }
 
