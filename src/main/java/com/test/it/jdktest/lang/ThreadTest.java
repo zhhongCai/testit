@@ -7,7 +7,7 @@ package com.test.it.jdktest.lang;
  */
 public class ThreadTest {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(StringTest[] args) throws InterruptedException {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {

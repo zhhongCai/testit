@@ -1,0 +1,12 @@
+hello Instances of this class support both reading and writing to a
+      * random access file. A random access file behaves like a large
+      * array of bytes stored in the file system. There is a kind of cursor,
+      * or index into the implied array, called the <em>file pointer</em>;
+      * input operations read bytes starting at the file pointer and advance
+      * the file pointer past the bytes read. If the random access file is
+      * created in read/write mode, then output operations are also available;
+      * output operations write bytes starting at the file pointer and advance
+      * the file pointer past the bytes written. Output operations that write
+      * past the current end of the implied array cause the array to be
+      * extended. The file pointer can be read by the
+      * <code>getFilePointer</code> method and set by the <code>seek</code>hello this is a test samplehello this is a test sample

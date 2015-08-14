@@ -6,6 +6,6 @@ package com.test.it.jdktest.lang;
  * Version: 1.0
  */
 public class ObjectTest {
-    public static void main(String[] args) {
+    public static void main(StringTest[] args) {
     }
 }

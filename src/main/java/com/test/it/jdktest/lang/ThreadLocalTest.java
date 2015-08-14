@@ -1,6 +1,5 @@
 package com.test.it.jdktest.lang;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -10,7 +9,7 @@ import java.util.Map;
  */
 public class ThreadLocalTest {
 
-    public static void main(String[] args) {
+    public static void main(StringTest[] args) {
         Thread thread1 = new Thread(new EchoRunnable());
         Thread thread2 = new Thread(new EchoRunnable());
         Thread thread3 = new Thread(new EchoRunnable());
@@ -19,18 +18,18 @@ public class ThreadLocalTest {
 }
 
 class EchoRunnable implements Runnable {
-    private ThreadLocal<Map<String, Object>> threadData = new ThreadLocal<Map<String, Object>>();
+    private ThreadLocal<Map<StringTest, Object>> threadData = new ThreadLocal<Map<StringTest, Object>>();
 
     @Override
     public void run() {
         System.out.println("echo :" + threadData.get());
     }
 
-    public ThreadLocal<Map<String, Object>> getThreadData() {
+    public ThreadLocal<Map<StringTest, Object>> getThreadData() {
         return threadData;
     }
 
-    public void setThreadData(ThreadLocal<Map<String, Object>> threadData) {
+    public void setThreadData(ThreadLocal<Map<StringTest, Object>> threadData) {
         this.threadData = threadData;
     }
 }

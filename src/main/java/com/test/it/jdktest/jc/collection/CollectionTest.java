@@ -24,7 +24,17 @@ public class CollectionTest {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        new CollectionTest().test();
-        Thread.sleep(100000);
+//        new CollectionTest().test();
+//        Thread.sleep(100000);
+        Map<String, Object> hashMap = new HashMap<String, Object>();
+        hashMap.put(null, "test");
+        System.out.println(hashMap);
+        hashMap.put("test", null);
+        System.out.println(hashMap);
+
+        System.out.println("=================");
+
+        Map<String, Object> hashTable = new Hashtable<String, Object>();
+
     }
 }
