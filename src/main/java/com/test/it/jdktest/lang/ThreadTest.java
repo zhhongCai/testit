@@ -7,7 +7,7 @@ package com.test.it.jdktest.lang;
  */
 public class ThreadTest {
 
-    public static void main(StringTest[] args) throws InterruptedException {
+    public void test1() throws InterruptedException {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -43,5 +43,31 @@ public class ThreadTest {
 
         System.out.println("main done");
         return;
+    }
+
+    public void test2() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("zzzZZZ...");
+                try {
+                    StackTraceElement[] traces = Thread.currentThread().getStackTrace();
+                    Thread.currentThread().dumpStack();
+                    for (StackTraceElement trace : traces) {
+                        System.out.println(trace);
+                    }
+                    Thread.currentThread().sleep(10000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        System.out.println("...");
+    }
+
+    public static void main(String[] args) {
+        ThreadTest test = new ThreadTest();
+        test.test2();
     }
 }

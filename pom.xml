@@ -44,7 +44,7 @@
       <scope>test</scope>
     </dependency>
 
-      <dependency>
+     <!-- <dependency>
           <groupId>com.chinanetcenter.light</groupId>
           <artifactId>app</artifactId>
           <version>${light.version}</version>
@@ -68,7 +68,7 @@
           <groupId>com.chinanetcenter.light</groupId>
           <artifactId>mq</artifactId>
           <version>${light.version}</version>
-      </dependency>
+      </dependency>-->
       <!--apache common -->
       <dependency>
           <groupId>commons-lang</groupId>

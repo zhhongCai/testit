@@ -13,8 +13,9 @@ public class PoolableFTPClientTemplateFactory implements PoolableObjectFactory<F
 
     @Override
     public FtpClientTemplate makeObject() throws Exception {
-        FtpClient ftpClient = new FtpClient();
-        return new FtpClientTemplate(ftpClient);
+//        FtpClient ftpClient = new FtpClient();
+//        return new FtpClientTemplate(ftpClient);
+        return null;
     }
 
     @Override
