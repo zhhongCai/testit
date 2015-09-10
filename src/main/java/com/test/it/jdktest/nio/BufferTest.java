@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 
 /**
@@ -14,7 +15,8 @@ import java.nio.channels.FileChannel;
 public class BufferTest {
     public static void main(String[] args) throws IOException {
         BufferTest test = new BufferTest();
-        test.testFileChannel();
+//        test.testFileChannel();
+        test.testBufferApi();
     }
 
     public void testBuffer() throws IOException {
@@ -57,5 +59,29 @@ public class BufferTest {
         bbf.put("hello this is a test sample".getBytes());
         bbf.flip();
         channel.write(bbf);
+    }
+
+    public void testBufferApi() {
+        CharBuffer charBuffer = CharBuffer.allocate(32);
+        charBuffer.put("This is a string haha....");
+        charBuffer.flip();
+//        CharBuffer charBuffer = CharBuffer.wrap("This is a string...");
+        System.out.println(charBuffer.get());
+        char[] dst = new char[10];
+        charBuffer.get(dst);
+        System.out.println(dst);
+        charBuffer.compact();
+        charBuffer.flip();
+        while(charBuffer.hasRemaining()) {
+            System.out.print(charBuffer.get());
+        }
+
+        CharBuffer charBufferDuplicated = charBuffer.duplicate();
+        charBufferDuplicated.flip();
+        System.out.println();
+        System.out.println(charBufferDuplicated.get());
+        System.out.println(charBuffer.hasRemaining());
+        System.out.println(charBuffer.order());
+        System.out.println(charBufferDuplicated.isReadOnly());
     }
 }

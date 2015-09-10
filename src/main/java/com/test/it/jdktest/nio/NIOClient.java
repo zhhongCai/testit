@@ -92,7 +92,6 @@ public class NIOClient {
             ByteBuffer outBuffer = ByteBuffer.wrap(msg.getBytes());
             channel.write(outBuffer);
         } else {
-            channel.finishConnect();
             channel.close();
         }
     }
