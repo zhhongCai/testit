@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
+ * JDK 动态代理
  * Created by caizh on 2015/8/21.
  */
 public class ProxyTest {

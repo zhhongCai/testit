@@ -12,7 +12,7 @@ import javax.servlet.ServletRegistration;
  * Created by caizh on 2015/8/26 0026.
  */
 public class MyWebAppInitializer implements WebApplicationInitializer {
-    @Override
+
     public void onStartup(ServletContext servletContext) throws ServletException {
         XmlWebApplicationContext appContext = new XmlWebApplicationContext();
         appContext.setConfigLocation("/WEB-INF/spring/dispatcher-config.xml");
