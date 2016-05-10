@@ -27,7 +27,8 @@ public class JedisTest {
     public void before() {
         String xmlFile = "testit-redis-jedisPool.xml";
         String xmlFile2 = "testit-redis-shardedJedisPool.xml";
-        context = new ClassPathXmlApplicationContext(xmlFile);
+        String xmlFile3 = "testit-redis-pool.xml";
+        context = new ClassPathXmlApplicationContext(xmlFile3);
     }
 
     @After
@@ -39,11 +40,7 @@ public class JedisTest {
 
     @Test
     public void test() {
-        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-        jedisPoolConfig.setMaxTotal(50);
-        jedisPoolConfig.setMaxIdle(50);
-        jedisPoolConfig.setMinIdle(1);
-        JedisPool jedisPool = new JedisPool(jedisPoolConfig, "localhost", 6379);
+        JedisPool jedisPool = (JedisPool) context.getBean("jedisPool");
         List<Jedis> jedisList = new LinkedList<Jedis>();
         for(int i = 0; i < 50; i++) {
             Jedis jedis = jedisPool.getResource();
@@ -66,7 +63,7 @@ public class JedisTest {
     public void testCluster() throws IOException {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         Set<HostAndPort> hostAndPortSet = new HashSet<HostAndPort>();
-        hostAndPortSet.add(new HostAndPort("localhost", 6379));
+//        hostAndPortSet.add(new HostAndPort("localhost", 6379));
         hostAndPortSet.add(new HostAndPort("localhost", 6380));
         JedisCluster jedisCluster = new JedisCluster(hostAndPortSet, jedisPoolConfig);
         jedisCluster.set("test", "aaa");
