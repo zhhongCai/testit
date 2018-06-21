@@ -473,6 +473,22 @@
           <artifactId>mongodb-driver</artifactId>
           <version>3.5.0</version>
       </dependency>
+      <dependency>
+          <groupId>org.msgpack</groupId>
+          <artifactId>msgpack</artifactId>
+          <version>0.6.12</version>
+      </dependency>
+      <dependency>
+          <groupId>io.micrometer</groupId>
+          <artifactId>micrometer-registry-prometheus</artifactId>
+          <version>1.0.5</version>
+      </dependency>
+      <dependency>
+          <groupId>com.google.protobuf</groupId>
+          <artifactId>protobuf-java</artifactId>
+          <version>3.5.1</version>
+      </dependency>
+
   </dependencies>
 
     <repositories>

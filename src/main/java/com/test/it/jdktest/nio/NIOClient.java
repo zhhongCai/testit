@@ -41,7 +41,7 @@ public class NIOClient {
     public void listen() throws IOException, InterruptedException {
         // 轮询访问selector
         int count = 0;
-        while (count++ < 10) {
+        while (count++ < 110) {
             selector.select();
             // 获得selector中选中的项的迭代器
             Iterator ite = this.selector.selectedKeys().iterator();

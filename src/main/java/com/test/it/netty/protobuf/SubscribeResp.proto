@@ -1,0 +1,11 @@
+syntax = "proto2";
+
+package com.test.ite.netty.protobuf;
+option java_package = "com.test.it.netty.protobuf.pojo";
+option java_outer_classname = "SubscribeRespProto";
+
+message SubscribeResp {
+    required int32 subReqId = 1;
+    required int32 respCode = 2;
+    required string desc = 3;
+}
