@@ -1,26 +1,21 @@
 package com.test.it.netty.httpserver;
 
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelProgressiveFuture;
-import io.netty.channel.ChannelProgressiveFutureListener;
-import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.DefaultHttpResponse;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.*;
+import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
+import io.netty.util.CharsetUtil;
 
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
 import static io.netty.handler.codec.http.HttpHeaders.isKeepAlive;
 import static io.netty.handler.codec.http.HttpHeaders.setContentLength;
+import static io.netty.handler.codec.rtsp.RtspHeaders.Names.CONNECTION;
 
 /**
  * @Author: caizhh
@@ -60,6 +55,12 @@ public class HttpFileServerHandler extends SimpleChannelInboundHandler<FullHttpR
             sendError(ctx, HttpResponseStatus.NOT_FOUND);
             return;
         }
+
+        if (file.isDirectory()) {
+            sendFileList(ctx, file);
+            return;
+        }
+
         if (!file.isFile()) {
             sendError(ctx, HttpResponseStatus.FORBIDDEN);
             return;
@@ -70,26 +71,52 @@ public class HttpFileServerHandler extends SimpleChannelInboundHandler<FullHttpR
 
             HttpResponse resp = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             setContentLength(resp, fileLength);
-//            setContentTypeHeader(resp, file);
+            setContentTypeHeader(resp, file);
             if (isKeepAlive(req)) {
-                resp.headers().set("CONNECTION", HttpHeaders.Values.KEEP_ALIVE);
+                resp.headers().set(CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
             }
             ctx.write(resp);
 
-            ChannelFuture sendFileFuture = ctx.write(new ChunkedFile(randomAccessFile, 0, fileLength, 8192), ctx.newProgressivePromise());
-            sendFileFuture.addListener(new ChannelProgressiveFutureListener() {
-                @Override
-                public void operationProgressed(ChannelProgressiveFuture channelProgressiveFuture, long progress, long total) throws Exception {
-                    System.out.println("operationProgressed");
-                }
+            ctx.writeAndFlush(new ChunkedFile(randomAccessFile, 0, fileLength, 8192), ctx.newProgressivePromise())
+                    .addListener(new ChannelProgressiveFutureListener() {
+                        @Override
+                        public void operationProgressed(ChannelProgressiveFuture channelProgressiveFuture, long progress, long total) throws Exception {
+                            System.out.println("operationProgressed: progress=" + progress + ", total=" + total);
+                        }
 
-                @Override
-                public void operationComplete(ChannelProgressiveFuture channelProgressiveFuture) throws Exception {
-                    System.out.println("operationComplete");
-                }
+                        @Override
+                        public void operationComplete(ChannelProgressiveFuture channelProgressiveFuture) throws Exception {
+                            System.out.println("operationComplete !!!");
+                        }
             });
         }
 
+    }
+
+    private void setContentTypeHeader(HttpResponse resp, File file) {
+        resp.headers().set(CONTENT_TYPE, "*/*");
+    }
+
+    private void sendFileList(ChannelHandlerContext ctx, File file) {
+        FullHttpResponse resp = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+        resp.headers().set(CONTENT_TYPE, "text/html;charset=TUF-8");
+
+        StringBuilder html = new StringBuilder("<ul>");
+        html.append("<li>file link: <a href=\"../\">..</a></li>");
+        for (File f : file.listFiles()) {
+            //TODO
+            html.append("<li>file link: <a href=\"").append(getPath(f)).append("\">").append(f.getName()).append("</a></li>");
+        }
+        html.append("</ul>");
+
+        ByteBuf bf = Unpooled.copiedBuffer(html, CharsetUtil.UTF_8);
+        resp.content().writeBytes(bf);
+        bf.release();
+        ctx.writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE);
+    }
+
+    private String getPath(File file) {
+        return file.getAbsolutePath().substring(file.getAbsolutePath().indexOf(url));
     }
 
     private String sanitizeUri(String uri) {
@@ -106,13 +133,16 @@ public class HttpFileServerHandler extends SimpleChannelInboundHandler<FullHttpR
         if (uri.contains(File.separator + ".")
                 || uri.contains("." + File.separator)
                 || uri.startsWith(".")
-                || uri.endsWith(".") || "".equalsIgnoreCase(uri)) {
+                || uri.endsWith(".") || !uri.contains(url)) {
             return null;
         }
-        return System.getProperty("user.dir") + File.separator + "github" + File.separator + "testit" + File.separator + uri;
+        return System.getProperty("user.dir") + File.separator + uri;
     }
 
-    private void sendError(ChannelHandlerContext ctx, HttpResponseStatus responseStatus) {
-        ctx.channel().writeAndFlush(responseStatus);
+    private void sendError(ChannelHandlerContext ctx, HttpResponseStatus status) {
+        FullHttpResponse resp = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status,
+                Unpooled.copiedBuffer("Failure: " + status.toString() + "\n\r", CharsetUtil.UTF_8));
+        resp.headers().set(CONTENT_TYPE, "text/plain;charset=TUF-8");
+        ctx.channel().writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE);
     }
 }

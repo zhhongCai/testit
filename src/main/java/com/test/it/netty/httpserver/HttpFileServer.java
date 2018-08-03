@@ -43,7 +43,7 @@ public class HttpFileServer {
 
 
             Channel channel = b.bind(port).sync().channel();
-            System.out.println("HTTP 文件目录服务器启动,网址: http://192.168.1.210:" + port + url);
+            System.out.println("HTTP 文件目录服务器启动,网址: http://localhost:" + port + url);
             channel.closeFuture().sync();
 
         } catch (InterruptedException e) {
