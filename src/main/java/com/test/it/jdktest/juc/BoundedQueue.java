@@ -28,7 +28,7 @@ public class BoundedQueue<T> {
     public int add(T e) throws InterruptedException {
         lock.lock();
         try {
-            if (count == item.length) {
+            while (count == item.length) {
                 System.out.println("add await");
                 notFull.await();
             }
@@ -50,7 +50,7 @@ public class BoundedQueue<T> {
     public T remove() throws InterruptedException {
         lock.lock();
         try {
-            if (count == 0) {
+            while (count == 0) {
                 System.out.println("remove await");
                 notEmpty.await();
             }
