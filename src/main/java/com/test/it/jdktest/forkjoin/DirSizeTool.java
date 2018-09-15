@@ -1,9 +1,7 @@
 package com.test.it.jdktest.forkjoin;
 
-import com.google.common.collect.Lists;
-
 import java.io.File;
-import java.util.List;
+import java.util.Arrays;
 import java.util.concurrent.RecursiveTask;
 
 /**
@@ -24,14 +22,14 @@ public class DirSizeTool {
         }
         System.out.println("Computing size of: " + file.getAbsolutePath() + "/" + file.getName());
 
-        long size = 0;
+        long size = file.length();
 
         // Ignore files which are not files and dirs
         if (file.isFile()) {
             size = file.length();
         } else {
             final File[] children = file.listFiles();
-            if (children != null) {
+            if (children != null && children.length > 0) {
                 for (final File child : children) {
                     size += DirSizeTool.sizeOf(child);
                 }
@@ -44,58 +42,62 @@ public class DirSizeTool {
 
     /**
      * fork/join方式
-     * @param file
+     * @param files
      * @return
      */
-    public static long sizeOf2(File file) {
-        SizeOfTask task = new SizeOfTask(file);
+    public static long sizeOf2(File[] files) {
+        SizeOfTask task = new SizeOfTask(files);
         return task.compute();
     }
 
     public static void main(String[] args) {
         System.out.println(DirSizeTool.sizeOf(new File("/home/caizh/tmp")));
         System.out.println("============================");
-        System.out.println("sizeOf2=" + DirSizeTool.sizeOf2(new File("/home/caizh/Downloads")));
+        System.out.println("sizeOf2=" + DirSizeTool.sizeOf2(new File[] {new File("/opt")}));
     }
 
     public static class SizeOfTask extends RecursiveTask<Long> {
 
-        private final File file;
+        private File[] file;
 
-        public SizeOfTask(File file) {
+        public SizeOfTask(File[] file) {
             this.file = file;
         }
 
         @Override
         protected Long compute() {
 
-            if (file == null || !file.exists()) {
+            final File[] files = file;
+            if (files == null || files.length == 0) {
                 return 0L;
             }
-            System.out.println("comput size of " + file.getAbsolutePath() + "/" + file.getName());
+//            System.out.println("compute: " + files.length);
 
-            if (file.isFile()) {
-                return file.length();
-            }
+            if (files.length == 1) {
+                long length = files[0].length();
+                if (files[0].isFile()) {
+                    return length;
+                } else {
+                    File[] children = files[0].listFiles();
+                    if (children == null || children.length == 0) {
+                        return length;
+                    }
 
-            final File[] children = file.listFiles();
-            if (children != null) {
-
-                Long size = 0L;
-                List<SizeOfTask> tasks = Lists.newArrayListWithCapacity(children.length);
-                for (final File child : children) {
-                    SizeOfTask t = new SizeOfTask(child);
-                    t.fork();
-                    tasks.add(t);
+                    return length + forkAndJoin(children);
                 }
-
-                for (SizeOfTask t : tasks) {
-                    size += t.join();
-                }
-                return size;
+            } else {
+                return forkAndJoin(files);
             }
+        }
 
-            return file.length();
+        private long forkAndJoin(File[] files) {
+            int middle = files.length / 2;
+            SizeOfTask t = new SizeOfTask(Arrays.copyOfRange(files, 0, middle));
+            SizeOfTask t2 = new SizeOfTask(Arrays.copyOfRange(files, middle, files.length));
+            t.fork();
+            t2.fork();
+
+            return t.join() + t2.join();
         }
     }
 }
