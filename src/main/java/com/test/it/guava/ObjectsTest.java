@@ -51,9 +51,7 @@ public class ObjectsTest {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-                .add("name", this.name)
-                .add("count", this.count).toString();
+        return Objects.hashCode(this,this.name,this.count) + "";
     }
 
     public static void main(String[] args) {

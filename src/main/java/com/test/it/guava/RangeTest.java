@@ -1,8 +1,8 @@
 package com.test.it.guava;
 
 
+import avro.shaded.com.google.common.collect.Ranges;
 import com.google.common.collect.Range;
-import com.google.common.collect.Ranges;
 
 /**
  * Author: caizh
@@ -11,9 +11,9 @@ import com.google.common.collect.Ranges;
  */
 public class RangeTest {
     public static void main(String[] args) {
-        Range<String> range = Ranges.closed("name", "name7");
+       /* Range<String> range = Ranges.openClosed("name", "name7");
         System.out.println(range.contains("namf"));
         System.out.println(range.contains("name3"));
-        System.out.println(range.contains("name7"));
+        System.out.println(range.contains("name7"));*/
     }
 }

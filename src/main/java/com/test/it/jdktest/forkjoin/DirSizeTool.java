@@ -51,7 +51,7 @@ public class DirSizeTool {
     }
 
     public static void main(String[] args) {
-        System.out.println(DirSizeTool.sizeOf(new File("/home/caizh/tmp")));
+        System.out.println(DirSizeTool.sizeOf(new File("/opt")));
         System.out.println("============================");
         System.out.println("sizeOf2=" + DirSizeTool.sizeOf2(new File[] {new File("/opt")}));
     }

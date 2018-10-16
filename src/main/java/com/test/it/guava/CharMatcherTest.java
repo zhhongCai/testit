@@ -9,7 +9,7 @@ import com.google.common.base.CharMatcher;
  */
 public class CharMatcherTest {
     public static void main(String[] args) {
-        System.out.println(CharMatcher.DIGIT.retainFrom("hello12306hahaha"));
-        System.out.println(CharMatcher.BREAKING_WHITESPACE.trimAndCollapseFrom("hhh   aaa s sss   h", '&'));
+//        System.out.println(new CharMatcher().retainFrom("hello12306hahaha"));
+//        System.out.println(CharMatcher.BREAKING_WHITESPACE.trimAndCollapseFrom("hhh   aaa s sss   h", '&'));
     }
 }

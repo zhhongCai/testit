@@ -38,9 +38,6 @@ public class ShareData extends Observable {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-                .add("name", this.name)
-                .add("description", this.description)
-                .toString();
+        return Objects.hashCode(this, this.name, this.description) + "";
     }
 }
