@@ -34,11 +34,14 @@ public class Graph {
      * @param vertex2
      */
     public void addEdge(Integer vertex, Integer vertex2) {
+        if (vertex.equals(vertex2)) {
+            throw new IllegalArgumentException("vertex can't equal to vertex2");
+        }
         relatedVertexs[vertex].add(vertex2);
         relatedVertexs[vertex2].add(vertex);
     }
 
-    public List<Integer> releatedVertexs(int vertex) {
+    public List<Integer> relatedVertexs(int vertex) {
         return relatedVertexs[vertex];
     }
 }

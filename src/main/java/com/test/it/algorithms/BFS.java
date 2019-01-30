@@ -29,7 +29,7 @@ public class BFS {
         graph.addEdge(6, 7);
 
 
-        bfs(graph, 0, 7);
+        bfs(graph, 1, 7);
     }
 
     private static void bfs(Graph graph, int startVertex, int endVertex) {
@@ -51,17 +51,17 @@ public class BFS {
         //起点
         toBeVisitedQueue.add(startVertex);
 
-        while(toBeVisitedQueue.size() > 0) {
+        while(!toBeVisitedQueue.isEmpty()) {
             //当前端点
             int currentVertex = toBeVisitedQueue.poll();
-            for (Integer relatedVertex : graph.releatedVertexs(currentVertex)) {
+            for (Integer relatedVertex : graph.relatedVertexs(currentVertex)) {
                 //未访问端点
                 if (!visitedVertex[relatedVertex]) {
                     path[relatedVertex] = currentVertex;
                     visitedVertex[relatedVertex] =true;
 
                     if (relatedVertex == endVertex) {
-                        printPrev(path, startVertex, endVertex);
+                        printPath(path, startVertex, endVertex);
                         return;
                     }
                     toBeVisitedQueue.add(relatedVertex);
@@ -70,9 +70,9 @@ public class BFS {
         }
     }
 
-    private static void printPrev(int[] prev, int startVertex, int endVertex) {
+    private static void printPath(int[] prev, int startVertex, int endVertex) {
         if (prev[endVertex] != -1 && endVertex != startVertex) {
-            printPrev(prev, startVertex, prev[endVertex]);
+            printPath(prev, startVertex, prev[endVertex]);
         }
         System.out.print(endVertex + " ");
     }
