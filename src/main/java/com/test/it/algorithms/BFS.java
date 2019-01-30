@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
+ * 广度优先
  * @Author: caizhh
  * @Date: Create in 19-1-29 下午6:54
  * @Description:

@@ -5,6 +5,7 @@ import com.test.it.algorithms.common.Graph;
 import java.util.Stack;
 
 /**
+ * 深度优先
  * Created by caizh on 19-1-29.
  */
 public class DFS {
