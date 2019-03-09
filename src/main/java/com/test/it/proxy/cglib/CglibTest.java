@@ -1,7 +1,7 @@
 package com.test.it.proxy.cglib;
 
-import net.sf.cglib.core.DefaultGeneratorStrategy;
 import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
 
 /**
  * @Author: caizhh
@@ -11,6 +11,18 @@ import net.sf.cglib.proxy.Enhancer;
 public class CglibTest {
     public static void main(String[] args) {
         Enhancer enhancer = new Enhancer();
-        enhancer.create()
+        enhancer.setSuperclass(Person.class);
+        enhancer.setCallback((MethodInterceptor) (obj, method, args1, proxy) -> {
+            System.out.println(method.toGenericString());
+            System.out.println(args1);
+            System.out.println(proxy);
+            return proxy.invokeSuper(obj, args1);
+        });
+
+        Person p = (Person) enhancer.create();
+        p.setAge(12);
+        p.setName("test");
+        System.out.println(p.toString());
+        System.out.println(p.getName() + ",age " + p.getAge());
     }
 }

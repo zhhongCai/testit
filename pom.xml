@@ -522,8 +522,8 @@
                           <goal>schema</goal>
                       </goals>
                       <configuration>
-                          <sourceDirectory>${project.basedir}/src/main/resouces</sourceDirectory>
-                          <outputDirectory>${project.basedir}/src/main/resouces</outputDirectory>
+                          <sourceDirectory>${project.basedir}/src/main/resources</sourceDirectory>
+                          <outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
                       </configuration>
                   </execution>
               </executions>
