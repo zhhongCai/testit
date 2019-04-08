@@ -1,0 +1,86 @@
+package com.test.it.algorithms;
+
+import java.util.Random;
+
+/**
+ * 参考Arrays中实现
+ */
+public class MergeSort {
+
+    public static void mergeSort(int[] data) {
+
+        int[] src = new int[data.length];
+        System.arraycopy(data, 0, src, 0, data.length);
+
+        mergeSort(src, data, 0 , data.length);
+    }
+
+    private static void mergeSort(int[] src, int[] data, int start, int end) {
+        if (start >= end) {
+            return;
+        }
+
+        int middle = (end + start) >>> 1;
+        //只有一个元素时
+        if (middle == start) {
+            return;
+        }
+
+        mergeSort(data, src, start, middle);
+        mergeSort(data, src, middle, end);
+
+        //前后两部分已有序
+        if (src[middle - 1] < src[middle]) {
+            System.arraycopy(src, start, data, start, end - start);
+            return;
+        }
+
+        merge(src, data, start, middle, end);
+    }
+
+    private static void merge(int[] src, int[] des, int start, int middle, int end) {
+        int desStart = start;
+        int desEnd = end;
+
+        System.out.println("merge start=" + start + ",middle=" + middle + ",end=" + end);
+        System.out.print("src = ");
+        print(src);
+        System.out.print("des = ");
+        print(des);
+
+        for (int i = desStart, left = start, right = middle; i < desEnd; i++) {
+            if (right >= end || left < middle && src[left] <= src[right]) {
+                des[i] = src[left++];
+            } else {
+                des[i] = src[right++];
+            }
+        }
+
+        System.out.print("merge des = ");
+        print(des);
+    }
+
+
+    public static void main(String[] args) {
+        int len = 11;
+        int[] a = new int[len];
+        Random random = new Random();
+        for (int i = 0; i < len; i++) {
+            a[i] = random.nextInt(100);
+        }
+        System.out.println("origin:");
+        print(a);
+
+        MergeSort.mergeSort(a);
+
+        System.out.println("result:");
+        print(a);
+    }
+
+    private static void print(int[] a) {
+        for (int i : a) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+    }
+}
