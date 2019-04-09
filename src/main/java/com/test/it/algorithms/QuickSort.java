@@ -2,7 +2,15 @@ package com.test.it.algorithms;
 
 import java.util.Random;
 
+/**
+ * 快排
+ * @Author: caizhh
+ * @Date: Create in 19-4-9 上午 10:01
+ * @Description:
+ */
 public class QuickSort {
+
+    private static Random random = new Random();
 
     public static void quickSort(int[] a) {
 
@@ -16,17 +24,15 @@ public class QuickSort {
 
         int pos = partition(a, start, end);
 
-        if (pos == start) {
-            return;
-        }
-
         quickSort(a, start, pos);
-        quickSort(a, pos, end);
+        //+1是因为pos位置已经第pos大的数字了(有序了)
+        quickSort(a, pos + 1, end);
     }
 
     private static int partition(int[] a, int start, int end) {
+        int pivotIndex = end - 1;
         //取末尾元素为分区元素
-        int pivot = a[end - 1];
+        int pivot = a[pivotIndex];
         // 当前比pivot小的下标,a[start~lessPos]为比pivot小的元素
         int lessPos = start;
         for (int i = lessPos; i < end - 1; i++) {
@@ -36,13 +42,16 @@ public class QuickSort {
                 lessPos++;
             }
         }
-        swap(a, lessPos, end - 1);
-        System.out.print("start=" + start + ", end=" + end + ", lessPos=" + lessPos + ": ");
-        print(a, start, end);
+        swap(a, lessPos, pivotIndex);
+        /*System.out.print("start=" + start + ", end=" + end + ", lessPos=" + lessPos + ": ");
+        print(a, start, end);*/
         return lessPos;
     }
 
     private static void swap(int[] a, int i, int pos) {
+        if (i == pos) {
+            return;
+        }
         int t = a[pos];
         a[pos] = a[i];
         a[i] = t;
@@ -73,5 +82,9 @@ public class QuickSort {
 
         System.out.println("result:");
         print(a);
+
+        int b[] = {36, 38, 27, 18, 46, 58, 44, 26, 68, 12};
+        QuickSort.quickSort(b);
+        print(b);
     }
 }

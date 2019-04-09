@@ -3,7 +3,7 @@ package com.test.it.algorithms;
 import java.util.Random;
 
 /**
- * 参考Arrays中实现
+ * 归并排序 参考Arrays中实现
  */
 public class MergeSort {
 
@@ -42,11 +42,11 @@ public class MergeSort {
         int desStart = start;
         int desEnd = end;
 
-        System.out.println("merge start=" + start + ",middle=" + middle + ",end=" + end);
+      /*  System.out.println("merge start=" + start + ",middle=" + middle + ",end=" + end);
         System.out.print("src = ");
         print(src);
         System.out.print("des = ");
-        print(des);
+        print(des);*/
 
         for (int i = desStart, left = start, right = middle; i < desEnd; i++) {
             if (right >= end || left < middle && src[left] <= src[right]) {
@@ -56,8 +56,8 @@ public class MergeSort {
             }
         }
 
-        System.out.print("merge des = ");
-        print(des);
+      /*  System.out.print("merge des = ");
+        print(des);*/
     }
 
 
