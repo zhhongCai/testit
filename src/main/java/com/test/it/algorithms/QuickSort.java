@@ -69,11 +69,11 @@ public class QuickSort {
     }
 
     public static void main(String[] args) {
-        int len = 10;
+        int len = 100;
         int[] a = new int[len];
         Random random = new Random();
         for (int i = 0; i < len; i++) {
-            a[i] = random.nextInt(100);
+            a[i] = random.nextInt(len);
         }
         System.out.println("origin:");
         print(a);

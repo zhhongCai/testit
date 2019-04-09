@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * 查找无序数组中第K大的数
  * @Author: caizh
- * @Date: Create in 2019-04-09 14:33
+ * @Date: Create in 2019-04-09 18:33
  * @Description:
  */
 public class FindKth {
@@ -45,27 +45,28 @@ public class FindKth {
     }
 
     public static void main(String[] args) {
-        int len = 10;
+        int len = 100;
         int[] a = new int[len];
         Random random = new Random();
         for (int i = 0; i < len; i++) {
-            a[i] = random.nextInt(100);
+            a[i] = random.nextInt(len);
         }
         System.out.println("origin:");
         print(a);
         int[] b = Arrays.copyOf(a, len);
+        int[] c = Arrays.copyOf(a, len);
 
-        QuickSort.quickSort(a);
-        System.out.println("quick sort:");
-        print(a);
-
-        MergeSort.mergeSort(b);
-        System.out.println("merge sort:");
-        print(b);
-
-        int k = random.nextInt(len) % 10 + 1;
+        int k = random.nextInt(len) % len + 1;
         System.out.print("the " + k + "th is ");
         System.out.println(FindKth.findKth(a, k));
+
+        QuickSort.quickSort(b);
+        System.out.println("quick sort:");
+        print(b);
+
+        MergeSort.mergeSort(c);
+        System.out.println("merge sort:");
+        print(c);
     }
 
     private static void print(int[] a) {
