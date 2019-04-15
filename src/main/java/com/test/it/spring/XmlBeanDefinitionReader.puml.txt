@@ -1,0 +1,18 @@
+@startuml
+
+/'读取xml文件转换成BeanDefinition'/
+"app" -> XmlBeanDefinitionReader: loadBeanDefinitions(Resource resource)
+XmlBeanDefinitionReader -> DefaultDocumentLoader: loadDocument(InputSource inputSource ...)
+DefaultDocumentLoader -> DefaultDocumentLoader: 创建DocumentBuilderFactory和DocumentBuilder
+DefaultDocumentLoader -> DocumentBuilderImpl: parse(InputSource),解析输入流生成Document
+DocumentBuilderImpl -> DocumentBuilderImpl: parse解析输入流生成Document
+DefaultDocumentLoader <-- DocumentBuilderImpl: 返回Document
+XmlBeanDefinitionReader -> XmlBeanDefinitionReader: registerBeanDefinitions
+XmlBeanDefinitionReader -> XmlBeanDefinitionReader: createBeanDefinitionDocumentReader
+XmlBeanDefinitionReader -> DefaultBeanDefinitionDocumentReader: registerBeanDefinitions
+DefaultBeanDefinitionDocumentReader -> DefaultBeanDefinitionDocumentReader: createDelegate
+DefaultBeanDefinitionDocumentReader -> DefaultBeanDefinitionDocumentReader: preProcessXml,parseBeanDefinitions,postProcessXml
+
+
+
+@enduml

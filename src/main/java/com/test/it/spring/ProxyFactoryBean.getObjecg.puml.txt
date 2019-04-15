@@ -1,0 +1,13 @@
+@startuml
+
+/'AopProxy的生成过程'/
+ProxyFactoryBean -> ProxyFactoryBean: initializeAdvisorChain()
+ProxyFactoryBean -> ProxyFactoryBean: getSingletonInstance()
+ProxyFactoryBean -> ProxyCreatorSupport: getProxy()
+ProxyCreatorSupport -> DefaultAopProxyFactory: createAopProxy()
+DefaultAopProxyFactory -> JdkdynamicAopProxy: isInterface()
+DefaultAopProxyFactory -> CglibProxyFactory: creatCglibProxy()
+DefaultAopProxyFactory <-- CglibProxyFactory: creatCglibProxy()
+
+
+@enduml

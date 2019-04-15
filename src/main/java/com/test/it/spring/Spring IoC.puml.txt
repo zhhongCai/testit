@@ -1,0 +1,23 @@
+@startuml
+
+/'读取XML资源,转化为BeanDefinition'/
+interface BeanDefinitionReader {
+  	int loadBeanDefinitions(Resource resource) throws BeanDefinitionStoreException;
+    int loadBeanDefinitions(Resource... resources) throws BeanDefinitionStoreException;
+    int loadBeanDefinitions(String location) throws BeanDefinitionStoreException;
+    int loadBeanDefinitions(String... locations) throws BeanDefinitionStoreException;
+}
+
+abstract class AbstractBeanDefinitionReader
+class XmlBeanDefinitionReader
+
+XmlBeanDefinitionReader -> AbstractBeanDefinitionReader
+AbstractBeanDefinitionReader -> BeanDefinitionReader
+
+
+/'XmlBeanDefinitionReader读取xml文件转换为BeanDefinition'/
+
+"XmlBeanDefinitionReader: " -> "loadBeanDefinitions(Resource resource)"
+
+
+@enduml

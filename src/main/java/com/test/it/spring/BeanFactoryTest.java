@@ -8,6 +8,6 @@ package com.test.it.spring;
 public class BeanFactoryTest {
 
     public static void main(String[] args) {
-
+        System.out.println(System.getProperty("java.io.tmpdir"));
     }
 }
