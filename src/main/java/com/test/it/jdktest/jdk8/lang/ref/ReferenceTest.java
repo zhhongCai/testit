@@ -28,7 +28,7 @@ public class ReferenceTest {
      */
     @Test
     public void testSoftReference() {
-        int size = 100000000;
+        int size = 10000000;
 
         SoftReference<List<String>> res = new SoftReference<>(Lists.newLinkedList());
 
