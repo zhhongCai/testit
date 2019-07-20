@@ -26,13 +26,15 @@ public class DistributedLockTest extends BaseTest {
 
     private ExecutorService executorService;
 
+    private int queueSize = 1024;
+
     @Before
     @Override
     public void before() throws IOException {
         super.before();
 
         executorService = new ThreadPoolExecutor(4, 40, 60,
-                TimeUnit.SECONDS, new LinkedBlockingQueue<>(512), new ThreadPoolExecutor.CallerRunsPolicy());
+                TimeUnit.SECONDS, new LinkedBlockingQueue<>(queueSize), new ThreadPoolExecutor.CallerRunsPolicy());
     }
 
     @After
@@ -51,20 +53,19 @@ public class DistributedLockTest extends BaseTest {
 
     @Test
     public void test() throws InterruptedException {
-        DistributedLock lock = new DistributedLock(zk);
-
         String key = "test2";
+        DistributedLock lock = new DistributedLock(zk, "test");
 
         CountDownLatch beginLatch = new CountDownLatch(1);
 
-        int n = 200;
+        int n = queueSize;
         List<Future<Integer>> futureList = Lists.newArrayListWithCapacity(n);
         for (int i = 0; i < n; i++) {
             int index = i;
             futureList.add(executorService.submit(() -> {
                 boolean locked = false;
-                try {
 
+                try {
                     beginLatch.await();
 
                     locked = lock.lock(key, 2 + index, TimeUnit.SECONDS);
@@ -75,6 +76,61 @@ public class DistributedLockTest extends BaseTest {
                         return 1;
                     } else {
                         System.out.println("获取锁失败" + index);
+                        return 0;
+                    }
+                } finally {
+                    if (locked) {
+                        lock.releaseLock();
+                    }
+                }
+            }));
+
+        }
+
+        beginLatch.countDown();
+
+        int sum = 0;
+        for (Future<Integer> f : futureList) {
+
+            try {
+                sum += f.get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Assert.assertEquals(n, sum);
+
+        Thread.sleep(300000);
+    }
+
+    @Test
+    public void testMultiLock() throws InterruptedException {
+        DistributedLock lock = new DistributedLock(zk);
+
+        String key = "multiLock";
+
+        CountDownLatch beginLatch = new CountDownLatch(1);
+
+        int n = queueSize;
+        List<Future<Integer>> futureList = Lists.newArrayListWithCapacity(n);
+        for (int i = 0; i < n; i++) {
+            int index = i;
+            futureList.add(executorService.submit(() -> {
+                boolean locked = false;
+                try {
+
+                    beginLatch.await();
+
+                    String k = key + index;
+                    locked = lock.lock(k, 2 + index, TimeUnit.SECONDS);
+                    if (locked) {
+                        System.out.println("获取锁成功" + k);
+
+                        System.out.println("do sth...." + k);
+                        return 1;
+                    } else {
+                        System.out.println("获取锁失败" + k);
                         return 0;
                     }
                 } finally {
