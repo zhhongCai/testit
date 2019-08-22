@@ -94,16 +94,18 @@ public class DistributedLock {
         String parentPath = getParentPath();
         String currentNode = current.substring(parentPath.length() + 1);
         LatchChildWatcher watcher = new LatchChildWatcher(currentNode);
+        List<String> children;
+        List<String> currentKeySortedList;
 
         for(;;) {
             logger.info("开始获取锁" + current);
             long start = System.currentTimeMillis();
-            List<String> children = zookeeper.getChildren(parentPath, false);
+            children = zookeeper.getChildren(parentPath, false);
 
-            List<String> currentKeySortedList = filterCurrentKeySortedList(children, currentNode);
+            currentKeySortedList = filterCurrentKeySortedList(children, currentNode);
             logger.info("currentKeySortedList: " + currentKeySortedList);
 
-            // 单前是最小的那个节点
+            // 当前是最小的那个节点
             if (currentKeySortedList.get(0).equals(currentNode)) {
                 logger.info("成功获得锁" + current);
                 return true;
@@ -199,7 +201,7 @@ public class DistributedLock {
 
         @Override
         public void process(WatchedEvent watcherEvent) {
-            System.out.println(current + ",Watcher fired on path: " + watcherEvent.getPath() + " state: " +
+            logger.info(current + ",Watcher fired on path: " + watcherEvent.getPath() + " state: " +
                     watcherEvent.getState() + " type " + watcherEvent.getType());
             // 删除节点事件
             if (watcherEvent.getType() == Watcher.Event.EventType.NodeDeleted) {
