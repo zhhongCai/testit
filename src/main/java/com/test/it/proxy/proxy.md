@@ -350,3 +350,5 @@ jdk动态代理只能针对接口,普通类无法使用.原因是生成的代理
 
 
 [Java 8 Multiple Inheritance Conflict Resolution Rules and Diamond Problem](https://www.javabrahman.com/java-8/java-8-multiple-inheritance-conflict-resolution-rules-and-diamond-problem/)
+
+[源码](https://github.com/zhhongCai/testit/tree/master/src/main/java/com/test/it/proxy/jdk)

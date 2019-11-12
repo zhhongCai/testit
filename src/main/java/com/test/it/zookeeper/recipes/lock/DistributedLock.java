@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * 基于zookeeper的分布式独占锁
  *
- * @Author: zhenghong.cai
+ * @Author: theonecai
  * @Date: Create in 2019-07-16 14:47
  * @Description:
  */
