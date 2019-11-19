@@ -1,0 +1,77 @@
+@startuml
+
+
+participant JdkProxyTest << (C,#ADD1B2) >>
+participant Proxy << (C,#ADD1B2) >>
+note over of Proxy
+代理类缓存：proxyClassCache = new WeakCache<ClassLoader,
+  CacheKey(为Object,Key1,Key2,KeyX之一),
+  由Proxy.ProxyClassFactory生成的代理类Class>
+end note
+participant WeakCache << (C,#ADD1B2) >>
+participant Class << (C,#ADD1B2) >>
+participant Constructor << (C,#ADD1B2) >>
+participant Proxy.KeyFactory << (C,#ADD1B2) >>
+note over of Proxy.KeyFactory
+    用来生成WeakCache的sub-key
+end note
+participant ProxyGenerator << (C,#ADD1B2) >>
+participant Proxy.ProxyClassFactory << (C,#ADD1B2) >>
+note over of Proxy.ProxyClassFactory
+    用来生成WeakCache的value（代理类）
+    apply方法中生成代理类
+end note
+participant WeakCache.Factory << (C,#ADD1B2) >>
+participant WeakCache.CacheKey << (C,#ADD1B2) >>
+
+activate JdkProxyTest
+JdkProxyTest -> Proxy++: 创建代理类实例：\nnewProxyInstance(...)
+
+Proxy -> Proxy++: 获取代理类: \ngetProxyClass0(loader, intfs);
+group "获取代理类"
+Proxy -> WeakCache++: WeakCache中获取代理类:\nproxyClassCache.get(loader, interfaces);\n其中，proxyClassCache = new WeakCache<>(\nnew KeyFactory(), new ProxyClassFactory());
+WeakCache -> WeakCache: 清除失效的entries: expungeStaleEntries()
+WeakCache -> WeakCache.CacheKey++: 获取cacheKey:\nCacheKey.valueOf(key, refQueue);
+WeakCache <-- WeakCache.CacheKey--: 返回cacheKey(is WeakReference)
+WeakCache -> WeakCache: 为cacheKey创建valuesMap如果不存在
+WeakCache -> Proxy.KeyFactory++: 生成WeakCache的sub-key: \nsubKeyFactory.apply(key, parameter)
+WeakCache <-- Proxy.KeyFactory--: 返回subKey
+WeakCache -> WeakCache.Factory++: 获取代理类: supplier.get()
+
+WeakCache.Factory -> Proxy.ProxyClassFactory++: 生成value(代理类)\nvalueFactory.apply(key, parameter)
+Proxy.ProxyClassFactory -> Proxy.ProxyClassFactory: 校验接口类，生成代理类包名：proxyPkg
+Proxy.ProxyClassFactory -> ProxyGenerator++: 生成代理类字节码: \ngenerateProxyClass(proxyName, interfaces, accessFlags);\nproxyName = proxyPkg + "$Proxy" +\n nextUniqueNumber.getAndIncrement();
+
+ProxyGenerator -> ProxyGenerator: new ProxyGenerator(var0, var1, var2)
+ProxyGenerator -> ProxyGenerator++: 生成代理类字节码: generateClassFile
+ProxyGenerator -> ProxyGenerator: 添加代理类的hashCode方法：\nthis.addProxyMethod(hashCodeMethod, Object.class);
+ProxyGenerator -> ProxyGenerator: 添加代理类的equals方法：\nthis.addProxyMethod(equalsMethod, Object.class);
+ProxyGenerator -> ProxyGenerator: 添加代理类的toString方法：\nthis.addProxyMethod(toStringMethod, Object.class);
+ProxyGenerator -> ProxyGenerator: 添加代理类接口中的方法;
+ProxyGenerator -> ProxyGenerator: 添加代理类含InvocationHandler入参的构造方法:\n generateConstructor;
+ProxyGenerator -> ProxyGenerator: 添加代理类Method字段
+ProxyGenerator -> ProxyGenerator: 添加代理类静态代码块(初始化method字段):\n generateStaticInitializer
+ProxyGenerator <-- ProxyGenerator--: 返回代理类字节码
+
+Proxy.ProxyClassFactory <-- ProxyGenerator--: 返回代理类字节码
+Proxy.ProxyClassFactory -> Proxy++: defineClass0: 由字节码返回Class<?>
+Proxy --> Proxy.ProxyClassFactory--: 返回代理类
+WeakCache.Factory <-- Proxy.ProxyClassFactory--: 返回代理类
+WeakCache <-- WeakCache.Factory--: 返回代理类
+
+Proxy <-- WeakCache--: 返回代理类Class<?>
+Proxy <-- Proxy: 返回代理类:Class<?> cl
+deactivate Proxy
+end
+
+group "创建代理类实例"
+activate Proxy
+Proxy -> Class++: 获取代理类含一个参数InvocationHandler的构造函数:\ncl.getConstructor(constructorParams);
+Proxy <-- Class--: 返回构造函数: Constructor<?> cons
+Proxy -> Constructor++: 调用构造函数创建代理类实例: \ncons.newInstance(new Object[]{h});
+Proxy <-- Constructor--: 返回代理类实例
+end
+
+JdkProxyTest <-- Proxy--: 返回代理类实例
+deactivate JdkProxyTest
+@enduml

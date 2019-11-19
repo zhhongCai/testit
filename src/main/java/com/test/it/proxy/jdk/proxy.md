@@ -1,17 +1,3 @@
-#　代理
-
-
-## asm
-
-## aspectj
-
-## cglib
-
-[cglib源码github地址](https://github.com/cglib/cglib  "Markdown")
-
-[博文推荐:Create Proxies Dynamically Using CGLIB Library](http://jnb.ociweb.com/jnb/jnbNov2005.html "Markdown")
-
-
 ## jdk动态代理
 
 ### jdk动态代理的使用
@@ -152,19 +138,22 @@ public class JdkProxyTest {
 
 ```java
 
+package com.sun.proxy;
+
 import com.test.it.proxy.jdk.IService;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.UndeclaredThrowableException;
 
-public final class ServiceProxy extends Proxy implements IService {
+public final class $Proxy2 extends Proxy implements IService {
     private static Method m1;
     private static Method m3;
+    private static Method m4;
     private static Method m2;
     private static Method m0;
 
-    public ServiceProxy(InvocationHandler var1) throws  {
+    public $Proxy2(InvocationHandler var1) throws  {
         super(var1);
     }
 
@@ -178,9 +167,19 @@ public final class ServiceProxy extends Proxy implements IService {
         }
     }
 
+    public final void printSth(String var1) throws  {
+        try {
+            super.h.invoke(this, m3, new Object[]{var1});
+        } catch (RuntimeException | Error var3) {
+            throw var3;
+        } catch (Throwable var4) {
+            throw new UndeclaredThrowableException(var4);
+        }
+    }
+
     public final String doSth(Integer var1) throws  {
         try {
-            return (String)super.h.invoke(this, m3, new Object[]{var1});
+            return (String)super.h.invoke(this, m4, new Object[]{var1});
         } catch (RuntimeException | Error var3) {
             throw var3;
         } catch (Throwable var4) {
@@ -211,7 +210,8 @@ public final class ServiceProxy extends Proxy implements IService {
     static {
         try {
             m1 = Class.forName("java.lang.Object").getMethod("equals", Class.forName("java.lang.Object"));
-            m3 = Class.forName("com.test.it.proxy.jdk.IService").getMethod("doSth", Class.forName("java.lang.Integer"));
+            m3 = Class.forName("com.test.it.proxy.jdk.IService").getMethod("printSth", Class.forName("java.lang.String"));
+            m4 = Class.forName("com.test.it.proxy.jdk.IService").getMethod("doSth", Class.forName("java.lang.Integer"));
             m2 = Class.forName("java.lang.Object").getMethod("toString");
             m0 = Class.forName("java.lang.Object").getMethod("hashCode");
         } catch (NoSuchMethodException var2) {
@@ -315,7 +315,7 @@ public final class ServiceBProxy extends Proxy implements IService {
 
 1. 如果被代理的接口都是public的,代理类是public final 非abstract(见上文ServiceProxy)
 2. 如果任一被代理接口是非public的,代理类是非public final 非abstract
-3. 代理类的全类名是不明确的.以"$Proxy"开头的类名空间需要给代理类预留
+3. 代理类的全类名是不明确的.以"$Proxy"开头的类名空间需要给代理类预留,比如：test()中debug时生成的： com.sun.proxy.$Proxy2
 4. 代理类继承了java.lang.reflect.Proxy
 5. 代理类按顺序实现了创建时指定的接口
 6. 代理类如果实现了一个非public接口,那它的包名跟该接口一致,否则包名是不明确的.注意包的封装性不会
@@ -348,7 +348,8 @@ jdk动态代理只能针对接口,普通类无法使用.原因是生成的代理
 注意InvocationHandler.invoke方法的Object proxy, Method method这两个参数,从生成的代理类ServiceProxy可以看出proxy传的的this（即代理类）
 调doSth方法时,method传的是 m3 = Class.forName("com.test.it.proxy.jdk.IService").getMethod("doSth", Class.forName("java.lang.Integer")).
 
+### 创建代理流程：
 
-[Java 8 Multiple Inheritance Conflict Resolution Rules and Diamond Problem](https://www.javabrahman.com/java-8/java-8-multiple-inheritance-conflict-resolution-rules-and-diamond-problem/)
+![jdkproxy](JDK动态代理.png)
 
 [源码](https://github.com/zhhongCai/testit/tree/master/src/main/java/com/test/it/proxy/jdk)

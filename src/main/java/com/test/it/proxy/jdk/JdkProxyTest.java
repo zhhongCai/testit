@@ -16,6 +16,8 @@ public class JdkProxyTest {
 
     /**
      * 参数单接口生成代理
+     * 调试ProxyClassFactory.apply()方法创建代理类: byte[] proxyClassFile = ProxyGenerator.generateProxyClass(proxyName, interfaces, accessFlags);
+     * 输出.class文件: watches: FileOutputStream f = new FileOutputStream("test.class" );f.write(proxyClassFile);f.close();
      * @throws IOException
      */
     @Test

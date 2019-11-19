@@ -1,5 +1,6 @@
 package com.test.it.proxy.cglib;
 
+import net.sf.cglib.core.DebuggingClassWriter;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 
@@ -10,6 +11,8 @@ import net.sf.cglib.proxy.MethodInterceptor;
  */
 public class CglibTest {
     public static void main(String[] args) {
+        //输出代理类class
+        System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "/Users/caizh/github/testit/");
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(Person.class);
         enhancer.setCallback((MethodInterceptor) (obj, method, args1, proxy) -> {
