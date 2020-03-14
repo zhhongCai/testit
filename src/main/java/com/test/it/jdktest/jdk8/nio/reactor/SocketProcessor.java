@@ -68,10 +68,12 @@ public class SocketProcessor implements Runnable {
             System.out.println("收到消息: " + output + "$");
 
 
-            write(socket, "message received success!" + Math.random());
+            write(socket, "message received success: " + output);
 
             // 继续读
-            key.interestOps(SelectionKey.OP_READ);
+            if (key.isConnectable()) {
+                key.interestOps(SelectionKey.OP_READ);
+            }
 
             if (output.equals("quit")) {
                 socket.close();
