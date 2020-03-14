@@ -17,13 +17,7 @@ public class MultiThreadDispatch implements Dispatch {
 
     @Override
     public boolean processSocket(SelectionKey sk) {
-
-
-        if (executor.getActiveCount() > 263) {
-            new SocketProcessor(sk).run();
-        } else {
-            executor.execute(new SocketProcessor(sk));
-        }
+        executor.execute(new SocketProcessor(sk));
         return true;
     }
 }

@@ -2,7 +2,6 @@ package com.test.it.jdktest.jdk8.nio.reactor;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
@@ -21,7 +20,13 @@ public class SocketProcessor implements Runnable {
     @Override
     public void run() {
         SocketChannel socket = (SocketChannel) key.channel();
-        if (!socket.isOpen()) {
+        if (!socket.isOpen() || !key.isValid()) {
+            System.out.println("socket is not open!");
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return;
         }
         if (key.isReadable()) {
@@ -52,11 +57,6 @@ public class SocketProcessor implements Runnable {
         } finally {
             writeBuffer.clear();
             writeBuffer = null;
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -66,12 +66,17 @@ public class SocketProcessor implements Runnable {
             socket.read(buffer);
             String output = new String(buffer.array()).trim();
             System.out.println("收到消息: " + output + "$");
+
+
+            write(socket, "message received success!" + Math.random());
+
+            // 继续读
+            key.interestOps(SelectionKey.OP_READ);
+
             if (output.equals("quit")) {
                 socket.close();
                 System.out.println("连接退出了");
             }
-
-//            write(socket, "message received success!");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
