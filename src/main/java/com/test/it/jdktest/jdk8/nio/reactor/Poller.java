@@ -8,6 +8,7 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @Author: zhenghong.cai
@@ -22,6 +23,8 @@ public class Poller implements Runnable {
 
     private boolean close = false;
 
+    private AtomicLong wakeupCounter = new AtomicLong(0);
+
     private LinkedBlockingQueue<PollerEvent> eventCache;
 
     public Poller(Reactor endpoint) {
@@ -35,11 +38,17 @@ public class Poller implements Runnable {
     @Override
     public void run() {
         while (endpoint.isRunning()) {
+            System.out.println("poller running...");
             events();
 
             int keyCount = 0;
             try {
-                keyCount = selector.selectNow();
+                if (wakeupCounter.getAndSet(-1) > 0) {
+                    keyCount = selector.selectNow();
+                } else {
+                    keyCount = selector.select(1000L);
+                }
+                wakeupCounter.set(0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -65,9 +74,7 @@ public class Poller implements Runnable {
     }
 
     public void register(SocketChannel socket){
-        Selector selector = endpoint.getSelector();
-        PollerEvent event = new PollerEvent(socket, PollerEvent.OP_REGISTER, selector);
-        eventCache.offer(event);
+        add(socket, PollerEvent.OP_REGISTER);
     }
 
     private void events() {
@@ -145,9 +152,12 @@ public class Poller implements Runnable {
         return true;
     }
 
-    private void add(SelectionKey sk, int interestOps) {
-        PollerEvent event = new PollerEvent((SocketChannel) sk.attachment(), interestOps, sk.selector());
+    private void add(SocketChannel socket, int interestOps) {
+        PollerEvent event = new PollerEvent(socket, interestOps, endpoint.getSelector());
         eventCache.offer(event);
+        if (wakeupCounter.incrementAndGet() == 0) {
+            selector.wakeup();
+        }
     }
 
     private void cancelledKey(SelectionKey sk) {

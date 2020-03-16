@@ -71,7 +71,7 @@ public class SocketProcessor implements Runnable {
             write(socket, "message received success: " + output);
 
             // 继续读
-            if (key.isConnectable()) {
+            if (key.isValid()) {
                 key.interestOps(SelectionKey.OP_READ);
             }
 
