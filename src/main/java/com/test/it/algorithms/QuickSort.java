@@ -14,7 +14,7 @@ public class QuickSort {
 
     public static void quickSort(int[] a) {
 
-        quickSort(a, 0, a.length);
+        quickSort(a, 0, a.length - 1);
     }
 
     private static void quickSort(int[] a, int start, int end) {
@@ -22,30 +22,72 @@ public class QuickSort {
             return;
         }
 
-        int pos = partition(a, start, end);
+//        int pos = partition(a, start, end);
+        int pos = partition2(a, start, end);
 
-        quickSort(a, start, pos);
+        quickSort(a, start, pos - 1);
         //+1是因为pos位置已经第pos大的数字了(有序了)
         quickSort(a, pos + 1, end);
     }
 
     private static int partition(int[] a, int start, int end) {
-        int pivotIndex = end - 1;
-        //取末尾元素为分区元素
-        int pivot = a[pivotIndex];
-        // 当前比pivot小的下标,a[start~lessPos]为比pivot小的元素
-        int lessPos = start;
-        for (int i = lessPos; i < end - 1; i++) {
-            //注意=号，存在相同数字的情况
-            if (a[i] <= pivot) {
-                swap(a, i, lessPos);
-                lessPos++;
+        //取首元素为分区元素
+        int pivot = a[start];
+        // 从左往右当前比pivot大的下标,a[start~low]为比pivot小的元素
+        int low = start;
+        // 从右往左当前比pivot小的下标,a[hight+1~end]为比pivot大的元素
+        int high = end;
+
+        // 注意先从右往左找，后从左往右找：这样当low == high时，保证a[low]小于pivot，此处即为pivot排序后位置
+        while (low < high) {
+            while (high > low && a[high] >= pivot) {
+                high--;
+            }
+            while (low < high && a[low] <= pivot) {
+                low++;
+            }
+            if (low < high) {
+                swap(a, low, high);
             }
         }
-        swap(a, lessPos, pivotIndex);
-        /*System.out.print("start=" + start + ", end=" + end + ", lessPos=" + lessPos + ": ");
-        print(a, start, end);*/
-        return lessPos;
+        if (low != start) {
+            swap(a, low, start);
+        }
+        System.out.print("start=" + start + ", end=" + end + ", low=" + low + ",hight=" + high + ", pivot=" + pivot + ": ");
+        print(a);
+        return low;
+    }
+
+    private static int partition2(int[] a, int start, int end) {
+        //取首元素为分区元素
+        int pivotIndex = start;
+        int pivot = a[pivotIndex];
+        // 从左往右当前比pivot大(等于，注意相等时也需要交换)的下标,a[start~low]为比pivot小的元素
+        int low = start;
+        // 从右往左当前比pivot小的下标,a[hight~end]为比pivot大的元素
+        int high = end;
+
+        //注意先从左往右，后从右往左
+        while (low < high) {
+            while (low < high && a[low] < pivot) {
+                low++;
+            }
+            while (high > low && a[high] >= pivot) {
+                high--;
+            }
+            if (low < high) {
+                if (low == pivotIndex) {
+                    pivotIndex = high;
+                }
+                swap(a, low, high);
+            }
+        }
+        if (low != pivotIndex) {
+            swap(a, low, pivotIndex);
+        }
+        System.out.print("start=" + start + ", end=" + end + ", low=" + low + ",hight=" + high + ", pivot=" + pivot + ": ");
+        print(a);
+        return low;
     }
 
     private static void swap(int[] a, int i, int pos) {
@@ -69,11 +111,11 @@ public class QuickSort {
     }
 
     public static void main(String[] args) {
-        int len = 100;
+        int len = 15;
         int[] a = new int[len];
         Random random = new Random();
         for (int i = 0; i < len; i++) {
-            a[i] = random.nextInt(len);
+            a[i] = random.nextInt(len*3);
         }
         System.out.println("origin:");
         print(a);
@@ -84,6 +126,7 @@ public class QuickSort {
         print(a);
 
         int b[] = {36, 38, 27, 18, 46, 58, 44, 26, 68, 12};
+        print(b);
         QuickSort.quickSort(b);
         print(b);
     }

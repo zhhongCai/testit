@@ -1,9 +1,9 @@
 @startuml
 
 class Reactor {
-    Poller poller
-    Dispatch dispatch
-    Selector selector
+    - Poller poller
+    - Dispatch dispatch
+    - Selector selector
 }
 
 class Acceptor
@@ -13,10 +13,10 @@ class MultiThreadDispatch implements Dispatch
 
 class SocketProcessor
 
-Reactor *.. Poller
-Reactor *.. Dispatch
-Acceptor *.. Reactor
+Reactor *.. "1" Poller
+Reactor *.. "1" Dispatch
+Reactor *.. "1" Acceptor
 
-MultiThreadDispatch *.. SocketProcessor
+MultiThreadDispatch *.. "n" SocketProcessor
 
 @enduml
