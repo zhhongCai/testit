@@ -1,6 +1,6 @@
 package com.test.it.algorithms;
 
-import java.util.Random;
+import static com.test.it.algorithms.ArrayUtil.print;
 
 /**
  * 归并排序 参考Arrays中实现
@@ -63,11 +63,7 @@ public class MergeSort {
 
     public static void main(String[] args) {
         int len = 11;
-        int[] a = new int[len];
-        Random random = new Random();
-        for (int i = 0; i < len; i++) {
-            a[i] = random.nextInt(100);
-        }
+        int[] a = ArrayUtil.randArray(len);
         System.out.println("origin:");
         print(a);
 
@@ -77,10 +73,5 @@ public class MergeSort {
         print(a);
     }
 
-    private static void print(int[] a) {
-        for (int i : a) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
-    }
+
 }

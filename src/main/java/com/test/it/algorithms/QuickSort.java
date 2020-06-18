@@ -53,8 +53,8 @@ public class QuickSort {
         if (low != start) {
             swap(a, low, start);
         }
-        System.out.print("start=" + start + ", end=" + end + ", low=" + low + ",hight=" + high + ", pivot=" + pivot + ": ");
-        print(a);
+//        System.out.print("start=" + start + ", end=" + end + ", low=" + low + ",hight=" + high + ", pivot=" + pivot + ": ");
+//        print(a);
         return low;
     }
 
@@ -85,8 +85,8 @@ public class QuickSort {
         if (low != pivotIndex) {
             swap(a, low, pivotIndex);
         }
-        System.out.print("start=" + start + ", end=" + end + ", low=" + low + ",hight=" + high + ", pivot=" + pivot + ": ");
-        print(a);
+//        System.out.print("start=" + start + ", end=" + end + ", low=" + low + ",hight=" + high + ", pivot=" + pivot + ": ");
+//        print(a);
         return low;
     }
 
@@ -99,17 +99,6 @@ public class QuickSort {
         a[i] = t;
     }
 
-    private static void print(int[] a) {
-        print(a, 0, a.length);
-    }
-
-    private static void print(int[] a, int start, int end) {
-        for (int i = start; i < end; i++) {
-            System.out.print(a[i] + " ");
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
         int len = 15;
         int[] a = new int[len];
@@ -118,16 +107,16 @@ public class QuickSort {
             a[i] = random.nextInt(len*3);
         }
         System.out.println("origin:");
-        print(a);
+        ArrayUtil.print(a);
 
         QuickSort.quickSort(a);
 
         System.out.println("result:");
-        print(a);
+        ArrayUtil.print(a);
 
-        int b[] = {36, 38, 27, 18, 46, 58, 44, 26, 68, 12};
-        print(b);
+        int b[] = ArrayUtil.randArray(len);
+        ArrayUtil.print(b);
         QuickSort.quickSort(b);
-        print(b);
+        ArrayUtil.print(b);
     }
 }

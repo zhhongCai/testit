@@ -1,7 +1,8 @@
 package com.test.it.algorithms;
 
 import java.util.Arrays;
-import java.util.Random;
+
+import static com.test.it.algorithms.ArrayUtil.print;
 
 /**
  * 查找无序数组中第K大的数
@@ -46,17 +47,13 @@ public class FindKth {
 
     public static void main(String[] args) {
         int len = 100;
-        int[] a = new int[len];
-        Random random = new Random();
-        for (int i = 0; i < len; i++) {
-            a[i] = random.nextInt(len);
-        }
+        int[] a = ArrayUtil.randArray(len);
         System.out.println("origin:");
         print(a);
         int[] b = Arrays.copyOf(a, len);
         int[] c = Arrays.copyOf(a, len);
 
-        int k = random.nextInt(len) % len + 1;
+        int k = 10;
         System.out.print("the " + k + "th is ");
         System.out.println(FindKth.findKth(a, k));
 
@@ -69,14 +66,4 @@ public class FindKth {
         print(c);
     }
 
-    private static void print(int[] a) {
-        print(a, 0, a.length);
-    }
-
-    private static void print(int[] a, int start, int end) {
-        for (int i = start; i < end; i++) {
-            System.out.print(a[i] + " ");
-        }
-        System.out.println();
-    }
 }
