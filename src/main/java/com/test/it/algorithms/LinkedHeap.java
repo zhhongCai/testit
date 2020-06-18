@@ -19,12 +19,17 @@ public class LinkedHeap<T extends Comparable<? super T>> {
     /**
      * 当前元素个数
      */
-    int size;
+    private int size;
 
     /**
      * 是否最大堆
      */
     boolean maxHeap;
+
+    /**
+     * 根据index查找时的路径
+     */
+    private int[] indexPath;
 
     public LinkedHeap() {
         this(true);
@@ -32,6 +37,7 @@ public class LinkedHeap<T extends Comparable<? super T>> {
 
     public LinkedHeap(boolean maxHeap) {
         this.maxHeap = maxHeap;
+        this.indexPath = new int[32];
     }
 
     public void push(T data) {
@@ -64,7 +70,7 @@ public class LinkedHeap<T extends Comparable<? super T>> {
         return findByIndex(head, parentIndex);
     }
 
-    private Node<T> findByIndex(Node<T> node, int parentIndex) {
+    private Node<T> findByIndex2(Node<T> node, int parentIndex) {
         if (node == null) {
             return null;
         }
@@ -79,6 +85,50 @@ public class LinkedHeap<T extends Comparable<? super T>> {
             return n;
         }
         return findByIndex(node.right, parentIndex);
+    }
+
+    private Node<T> findByIndex(Node<T> node, int parentIndex) {
+        if (node.index == parentIndex) {
+            return node;
+        }
+
+        int i;
+        int len = indexPath.length;
+        int level = parentIndex >> 1;
+        for (i =  0; i < len; i++) {
+            indexPath[i] =level;
+            if (indexPath[i] == 1) {
+                break;
+            }
+            level >>= 1;
+        }
+        Node<T> current = node;
+        for (int j = i; j >= 0; j--) {
+            if (current.index == indexPath[j]) {
+                if (current.left == null) {
+                    return null;
+                }
+                if (j > 0 && current.left.index == indexPath[j - 1]) {
+                    current = current.left;
+                    continue;
+                }
+                if (j > 0 && current.right.index == indexPath[j - 1]) {
+                    current = current.right;
+                }
+            } else {
+                return null;
+            }
+        }
+        if (current.index == parentIndex) {
+            return current;
+        }
+        if (current.left != null && current.left.index == parentIndex) {
+            return current.left;
+        }
+        if (current.right != null && current.right.index == parentIndex) {
+            return current.right;
+        }
+        return current;
     }
 
     /**
@@ -217,7 +267,7 @@ public class LinkedHeap<T extends Comparable<? super T>> {
 
     public static void main(String[] args) {
         LinkedHeap<Integer> maxHeap = new LinkedHeap<>();
-        int len = 100000;
+        int len = 1000000;
         int[] a = ArrayUtil.randArray(len);
         long start = System.currentTimeMillis();
         System.out.println("len = " + len);
