@@ -29,7 +29,7 @@ public class LinkedHeap<T extends Comparable<? super T>> {
     /**
      * 根据index查找时的路径
      */
-    private int[] indexPath;
+    private int[] parentIndexPath;
 
     public LinkedHeap() {
         this(true);
@@ -37,11 +37,11 @@ public class LinkedHeap<T extends Comparable<? super T>> {
 
     public LinkedHeap(boolean maxHeap) {
         this.maxHeap = maxHeap;
-        this.indexPath = new int[32];
+        this.parentIndexPath = new int[32];
     }
 
     public void push(T data) {
-        Node<T> node = new Node<>(data, size + 1);
+        Node<T> node = new Node<>(data);
         if (head == null) {
             head = node;
             tail = node;
@@ -56,7 +56,7 @@ public class LinkedHeap<T extends Comparable<? super T>> {
         } else if (parent.right == null) {
             parent.right = node;
         } else {
-            throw new RuntimeException("父节点找错了");
+            // 不会走到这里
         }
 
         ++size;
@@ -67,68 +67,56 @@ public class LinkedHeap<T extends Comparable<? super T>> {
 
     private Node<T> findParentForPush() {
         int parentIndex = (size + 1) / 2;
-        return findByIndex(head, parentIndex);
+        return findByIndex(parentIndex);
     }
 
-    private Node<T> findByIndex2(Node<T> node, int parentIndex) {
-        if (node == null) {
-            return null;
-        }
-        if (node.index == parentIndex) {
-            return node;
-        }
-        if (node.index > parentIndex) {
-            return null;
-        }
-        Node<T> n = findByIndex(node.left, parentIndex);
-        if (n != null) {
-            return n;
-        }
-        return findByIndex(node.right, parentIndex);
-    }
-
-    private Node<T> findByIndex(Node<T> node, int parentIndex) {
-        if (node.index == parentIndex) {
+    /**
+     * 若当前节点index为currentIndex,其左子节点index为2*currentIndex,其右子节点index为2*currentIndex + 1
+     * @param index
+     * @return
+     */
+    private Node<T> findByIndex(int index) {
+        Node<T> node = head;
+        if (index == 1) {
             return node;
         }
 
         int i;
-        int len = indexPath.length;
-        int level = parentIndex >> 1;
-        for (i =  0; i < len; i++) {
-            indexPath[i] =level;
-            if (indexPath[i] == 1) {
+        int len = parentIndexPath.length;
+        int parentIndex = index >> 1;
+        parentIndexPath[0] = index;
+        for (i =  1; i < len; i++) {
+            parentIndexPath[i] = parentIndex;
+            if (parentIndexPath[i] == 1) {
                 break;
             }
-            level >>= 1;
+            parentIndex >>= 1;
         }
         Node<T> current = node;
-        for (int j = i; j >= 0; j--) {
-            if (current.index == indexPath[j]) {
+        int currentIndex = 1;
+        int nextIndex;
+        for (int j = i; j >= 1; j--) {
+            if (currentIndex == parentIndexPath[j]) {
                 if (current.left == null) {
                     return null;
                 }
-                if (j > 0 && current.left.index == indexPath[j - 1]) {
+                nextIndex = currentIndex << 1;
+                if (nextIndex == parentIndexPath[j - 1]) {
                     current = current.left;
+                    currentIndex = nextIndex;
                     continue;
                 }
-                if (j > 0 && current.right.index == indexPath[j - 1]) {
+                if ((nextIndex + 1) == parentIndexPath[j - 1]) {
                     current = current.right;
+                    currentIndex = nextIndex + 1;
                 }
-            } else {
-                return null;
             }
         }
-        if (current.index == parentIndex) {
+        if (currentIndex == index) {
             return current;
         }
-        if (current.left != null && current.left.index == parentIndex) {
-            return current.left;
-        }
-        if (current.right != null && current.right.index == parentIndex) {
-            return current.right;
-        }
-        return current;
+
+        return null;
     }
 
     /**
@@ -162,7 +150,7 @@ public class LinkedHeap<T extends Comparable<? super T>> {
             }
             if (tailParent.left == tailNode) {
                 tailParent.left = null;
-                tail = findByIndex(head, size);
+                tail = findByIndex(size);
             }
         }
         tailNode = null;
@@ -248,11 +236,9 @@ public class LinkedHeap<T extends Comparable<? super T>> {
     static class Node<T> {
         private T val;
         private Node<T> left, right, parent;
-        private int index;
 
-        public Node(T val, int index) {
+        public Node(T val) {
             this.val = val;
-            this.index = index;
         }
     }
 
