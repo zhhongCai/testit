@@ -94,26 +94,22 @@ public class LinkedHeap<T extends Comparable<? super T>> {
         }
         Node<T> current = node;
         int currentIndex = 1;
-        int nextIndex;
-        for (int j = i; j >= 1; j--) {
-            if (currentIndex == parentIndexPath[j]) {
-                if (current.left == null) {
-                    return null;
-                }
-                nextIndex = currentIndex << 1;
-                if (nextIndex == parentIndexPath[j - 1]) {
-                    current = current.left;
-                    currentIndex = nextIndex;
-                    continue;
-                }
-                if ((nextIndex + 1) == parentIndexPath[j - 1]) {
-                    current = current.right;
-                    currentIndex = nextIndex + 1;
-                }
+        for (int j = i; j >= 0; j--) {
+            if (currentIndex == index) {
+                return current;
             }
-        }
-        if (currentIndex == index) {
-            return current;
+            if (current.left == null) {
+                return null;
+            }
+            currentIndex = currentIndex << 1;
+            if (currentIndex == parentIndexPath[j - 1]) {
+                current = current.left;
+                continue;
+            }
+            if ((currentIndex + 1) == parentIndexPath[j - 1]) {
+                current = current.right;
+                currentIndex = currentIndex + 1;
+            }
         }
 
         return null;
