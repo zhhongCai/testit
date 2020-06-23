@@ -41,6 +41,10 @@ public class ArrayHeap<T extends Comparable<? super T>> {
         this.maxHeap = maxHeap;
     }
 
+    public int size() {
+        return size;
+    }
+
     /**
      * 堆化
      * @param arr

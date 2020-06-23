@@ -25,6 +25,17 @@ public class ArrayUtil {
         print(a, 0, a.length);
     }
 
+    public static void print(int[] a) {
+        print(a, 0, a.length);
+    }
+
+    public static void print(int[] a, int start, int end) {
+        for (int i = start; i < end; i++) {
+            System.out.print(a[i] + " ");
+        }
+        System.out.println();
+    }
+
     public static void print(Integer[] a, int start, int end) {
         for (int i = start; i < end; i++) {
             System.out.print(a[i] + " ");

@@ -157,7 +157,8 @@ public class BinarySearch {
     public static void main(String[] args) {
         int len = 15;
         Integer[] a = ArrayUtil.randArray(len);
-        QuickSort.quickSort(a);
+        QuickSort<Integer> sort = new QuickSort<>();
+        sort.quickSort(a);
         ArrayUtil.print(a);
 
         int val = 15;

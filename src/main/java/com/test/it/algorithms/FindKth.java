@@ -88,20 +88,21 @@ public class FindKth {
     }
 
     public static void main(String[] args) {
-        int len = 100;
+        int len = 23;
         Integer[] a = ArrayUtil.randArray(len);
         System.out.println("origin:");
         print(a);
         Integer[] b = Arrays.copyOf(a, len);
         Integer[] c = Arrays.copyOf(a, len);
 
-        int k = 10;
+        int k = 5;
         System.out.print("the " + k + "th is ");
         System.out.println(FindKth.findKth(a, k));
         System.out.print("minheap the " + k + "th is ");
         System.out.println(FindKth.findKthWithMinHeap(a, k));
 
-        QuickSort.quickSort(b);
+        QuickSort<Integer> sort = new QuickSort<>();
+        sort.quickSort(b);
         System.out.println("quick sort:");
         print(b);
 

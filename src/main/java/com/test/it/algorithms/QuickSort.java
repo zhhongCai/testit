@@ -1,5 +1,6 @@
 package com.test.it.algorithms;
 
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -8,16 +9,14 @@ import java.util.Random;
  * @Date: Create in 19-4-9 上午 10:01
  * @Description:
  */
-public class QuickSort {
+public class QuickSort<T extends Comparable<? super T>> {
 
-    private static Random random = new Random();
-
-    public static void quickSort(Integer[] a) {
+    public void quickSort(T [] a) {
 
         quickSort(a, 0, a.length - 1);
     }
 
-    private static void quickSort(Integer[] a, int start, int end) {
+    private void quickSort(T[] a, int start, int end) {
         if (start >= end) {
             return;
         }
@@ -30,9 +29,9 @@ public class QuickSort {
         quickSort(a, pos + 1, end);
     }
 
-    private static int partition(Integer[] a, int start, int end) {
+    private int partition(T[] a, int start, int end) {
         //取首元素为分区元素
-        int pivot = a[start];
+        T pivot = a[start];
         // 从左往右当前比pivot大的下标,a[start~low]为比pivot小的元素
         int low = start;
         // 从右往左当前比pivot小的下标,a[hight+1~end]为比pivot大的元素
@@ -40,10 +39,10 @@ public class QuickSort {
 
         // 注意先从右往左找，后从左往右找：这样当low == high时，保证a[low]小于pivot，此处即为pivot排序后位置
         while (low < high) {
-            while (high > low && a[high] >= pivot) {
+            while (high > low && a[high].compareTo(pivot) >= 0) {
                 high--;
             }
-            while (low < high && a[low] <= pivot) {
+            while (low < high && a[low].compareTo(pivot) <= 0) {
                 low++;
             }
             if (low < high) {
@@ -58,10 +57,10 @@ public class QuickSort {
         return low;
     }
 
-    private static int partition2(Integer[] a, int start, int end) {
+    private int partition2(T[] a, int start, int end) {
         //取首元素为分区元素
         int pivotIndex = start;
-        int pivot = a[pivotIndex];
+        T pivot = a[pivotIndex];
         // 从左往右当前比pivot大(等于，注意相等时也需要交换)的下标,a[start~low]为比pivot小的元素
         int low = start;
         // 从右往左当前比pivot小的下标,a[hight~end]为比pivot大的元素
@@ -69,10 +68,10 @@ public class QuickSort {
 
         //注意先从左往右，后从右往左
         while (low < high) {
-            while (low < high && a[low] < pivot) {
+            while (low < high && a[low].compareTo(pivot) < 0) {
                 low++;
             }
-            while (high > low && a[high] >= pivot) {
+            while (high > low && a[high].compareTo(pivot) >= 0) {
                 high--;
             }
             if (low < high) {
@@ -90,17 +89,17 @@ public class QuickSort {
         return low;
     }
 
-    private static void swap(Integer[] a, int i, int pos) {
+    private void swap(T[] a, int i, int pos) {
         if (i == pos) {
             return;
         }
-        int t = a[pos];
+        T t = a[pos];
         a[pos] = a[i];
         a[i] = t;
     }
 
-    public static void main(String[] args) {
-        int len = 15;
+    public static void main(String[] args) throws IOException {
+        int len = 25;
         Integer[] a = new Integer[len];
         Random random = new Random();
         for (int i = 0; i < len; i++) {
@@ -109,14 +108,15 @@ public class QuickSort {
         System.out.println("origin:");
         ArrayUtil.print(a);
 
-        QuickSort.quickSort(a);
+        QuickSort<Integer> sort = new QuickSort<>();
+        sort.quickSort(a);
 
         System.out.println("result:");
         ArrayUtil.print(a);
 
         Integer b[] = ArrayUtil.randArray(len);
         ArrayUtil.print(b);
-        QuickSort.quickSort(b);
+        sort.quickSort(b);
         ArrayUtil.print(b);
     }
 }
