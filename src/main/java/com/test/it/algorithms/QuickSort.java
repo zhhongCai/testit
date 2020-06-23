@@ -12,12 +12,12 @@ public class QuickSort {
 
     private static Random random = new Random();
 
-    public static void quickSort(int[] a) {
+    public static void quickSort(Integer[] a) {
 
         quickSort(a, 0, a.length - 1);
     }
 
-    private static void quickSort(int[] a, int start, int end) {
+    private static void quickSort(Integer[] a, int start, int end) {
         if (start >= end) {
             return;
         }
@@ -26,11 +26,11 @@ public class QuickSort {
         int pos = partition2(a, start, end);
 
         quickSort(a, start, pos - 1);
-        //+1是因为pos位置已经第pos大的数字了(有序了)
+        //+1是因为pos位置已经第pos小的数字了(有序了)
         quickSort(a, pos + 1, end);
     }
 
-    private static int partition(int[] a, int start, int end) {
+    private static int partition(Integer[] a, int start, int end) {
         //取首元素为分区元素
         int pivot = a[start];
         // 从左往右当前比pivot大的下标,a[start~low]为比pivot小的元素
@@ -58,7 +58,7 @@ public class QuickSort {
         return low;
     }
 
-    private static int partition2(int[] a, int start, int end) {
+    private static int partition2(Integer[] a, int start, int end) {
         //取首元素为分区元素
         int pivotIndex = start;
         int pivot = a[pivotIndex];
@@ -90,7 +90,7 @@ public class QuickSort {
         return low;
     }
 
-    private static void swap(int[] a, int i, int pos) {
+    private static void swap(Integer[] a, int i, int pos) {
         if (i == pos) {
             return;
         }
@@ -101,7 +101,7 @@ public class QuickSort {
 
     public static void main(String[] args) {
         int len = 15;
-        int[] a = new int[len];
+        Integer[] a = new Integer[len];
         Random random = new Random();
         for (int i = 0; i < len; i++) {
             a[i] = random.nextInt(len*3);
@@ -114,7 +114,7 @@ public class QuickSort {
         System.out.println("result:");
         ArrayUtil.print(a);
 
-        int b[] = ArrayUtil.randArray(len);
+        Integer b[] = ArrayUtil.randArray(len);
         ArrayUtil.print(b);
         QuickSort.quickSort(b);
         ArrayUtil.print(b);

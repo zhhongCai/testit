@@ -7,15 +7,15 @@ import static com.test.it.algorithms.ArrayUtil.print;
  */
 public class MergeSort {
 
-    public static void mergeSort(int[] data) {
+    public static void mergeSort(Integer[] data) {
 
-        int[] src = new int[data.length];
+        Integer[] src = new Integer[data.length];
         System.arraycopy(data, 0, src, 0, data.length);
 
         mergeSort(src, data, 0 , data.length);
     }
 
-    private static void mergeSort(int[] src, int[] data, int start, int end) {
+    private static void mergeSort(Integer[] src, Integer[] data, int start, int end) {
         if (start >= end) {
             return;
         }
@@ -38,7 +38,7 @@ public class MergeSort {
         merge(src, data, start, middle, end);
     }
 
-    private static void merge(int[] src, int[] des, int start, int middle, int end) {
+    private static void merge(Integer[] src, Integer[] des, int start, int middle, int end) {
         int desStart = start;
         int desEnd = end;
 
@@ -63,7 +63,7 @@ public class MergeSort {
 
     public static void main(String[] args) {
         int len = 11;
-        int[] a = ArrayUtil.randArray(len);
+        Integer[] a = ArrayUtil.randArray(len);
         System.out.println("origin:");
         print(a);
 

@@ -8,8 +8,8 @@ import java.util.Random;
  * @Description:
  */
 public class ArrayUtil {
-    public static int[] randArray(int size) {
-        int[] a = new int[size];
+    public static Integer[] randArray(int size) {
+        Integer[] a = new Integer[size];
         Random random = new Random();
         for (int i = 0; i < size; i++) {
             a[i] = random.nextInt(size*3);
@@ -17,15 +17,15 @@ public class ArrayUtil {
         return a;
     }
 
-    public static int[] randArray() {
+    public static Integer[] randArray() {
         return randArray(new Random().nextInt(100000) + 1);
     }
 
-    public static void print(int[] a) {
+    public static void print(Integer[] a) {
         print(a, 0, a.length);
     }
 
-    public static void print(int[] a, int start, int end) {
+    public static void print(Integer[] a, int start, int end) {
         for (int i = start; i < end; i++) {
             System.out.print(a[i] + " ");
         }

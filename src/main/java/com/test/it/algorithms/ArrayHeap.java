@@ -1,7 +1,5 @@
 package com.test.it.algorithms;
 
-import java.util.Random;
-
 /**
  * @Author: theonecai
  * @Date: Create in 2020/6/17 14:21
@@ -41,6 +39,42 @@ public class ArrayHeap<T extends Comparable<? super T>> {
         heap = new Object[capacity + 1];
         this.size = 0;
         this.maxHeap = maxHeap;
+    }
+
+    /**
+     * 堆化
+     * @param arr
+     */
+    public void heapify(T[] arr, int len) {
+        if (arr == null) {
+            return;
+        }
+        int i = len / 2;
+        for (int j = 1; j <= len; j++) {
+            heap[j] = arr[j - 1];
+            size++;
+        }
+        for ( ; i >= 1; i--) {
+            fixDown(i);
+        }
+    }
+
+    public T top() {
+        if (size == 0) {
+            return null;
+        }
+        return (T) heap[1];
+    }
+
+    public void updateTop(T newData) {
+        if (size == 0) {
+            push(newData);
+            return;
+        }
+
+        heap[1] = newData;
+
+        fixDown(1);
     }
 
     public void push(T data) {
@@ -88,6 +122,7 @@ public class ArrayHeap<T extends Comparable<? super T>> {
 
     private int fixDown(int index) {
         int downIndex = index * 2;
+
         int current = index;
         while (downIndex <= size) {
             int leftIdx = downIndex;
@@ -109,9 +144,9 @@ public class ArrayHeap<T extends Comparable<? super T>> {
     }
 
     public static void main(String[] args) {
-        int len = 1000000;
+        int len = 100;
         ArrayHeap<Integer> maxHeap = new ArrayHeap<>(len);
-        int[] a = ArrayUtil.randArray(len);
+        Integer[] a = ArrayUtil.randArray(len);
         long start = System.currentTimeMillis();
         for (int i = 0; i < len; i++) {
             maxHeap.push(a[i]);
@@ -121,6 +156,19 @@ public class ArrayHeap<T extends Comparable<? super T>> {
 
         int pre = Integer.MAX_VALUE;
         int current;
+        for (int i = 0; i < len; i++) {
+            current = maxHeap.poll();
+            if (pre < current) {
+                System.out.println("maxHeap: pre = " + pre + ", current = " + current);
+                return;
+            }
+            pre = current;
+        }
+
+        maxHeap = new ArrayHeap<>(len);
+        maxHeap.heapify(a, a.length);
+
+        pre = Integer.MAX_VALUE;
         for (int i = 0; i < len; i++) {
             current = maxHeap.poll();
             if (pre < current) {
@@ -144,6 +192,21 @@ public class ArrayHeap<T extends Comparable<? super T>> {
             }
             pre = current;
         }
+
+        minHeap = new ArrayHeap<>(len, false);
+        minHeap.heapify(a, a.length);
+
+        pre = Integer.MIN_VALUE;
+        for (int i = 0; i < len; i++) {
+            current = minHeap.poll();
+            if (pre > current) {
+                System.out.println("minHeap: pre = " + pre + ", current = " + current);
+                return;
+            }
+            pre = current;
+        }
         System.out.println("done,costtime=" + (System.currentTimeMillis() - start));
+
+
     }
 }

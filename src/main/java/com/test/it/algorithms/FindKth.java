@@ -11,32 +11,74 @@ import static com.test.it.algorithms.ArrayUtil.print;
  * @Description:
  */
 public class FindKth {
-    public static int findKth(int[] array, int k) {
-        int p = partition(array, 0, array.length);
+    public static int findKth(Integer[] array, int k) {
+        int len = array.length;
+        int p = partition(array, 0, len - 1);
 
-        while(p + 1 != k) {
-            if (p + 1 > k) {
+        // 第k大元素对应从小到大元素索引
+        int th = len - k + 1;
+        while(p + 1 != th) {
+            if (p + 1 > th) {
                 p = partition(array, 0, p);
-            } else {
-                p = partition(array, p + 1, array.length);
+            } else if (p + 1 < th){
+                p = partition(array, p + 1, array.length - 1);
             }
         }
         return array[p];
     }
 
-    private static int partition(int[] array, int start, int end) {
-        int pivot = array[end - 1];
-        int lessPos = start;
-        for (int i = start; i < end - 1; i++) {
-            if (array[i] <= pivot) {
-                swap(array, i, lessPos++);
+    /**
+     * 对数组构造元素个数为k的最小堆
+     * @param array
+     * @param k
+     * @return
+     */
+    public static int findKthWithMinHeap(Integer[] array, int k) {
+        int len = array.length;
+        ArrayHeap<Integer> minHeap = new ArrayHeap<>(k, false);
+        minHeap.heapify(array, k);
+        for (int i = k; i < len; i++) {
+            if (array[i] > minHeap.top()) {
+                minHeap.updateTop(array[i]);
             }
         }
-        swap(array, lessPos, end - 1);
-        return lessPos;
+
+        return minHeap.top();
     }
 
-    private static void swap(int[] array, int i, int j) {
+    private static int partition(Integer[] array, int start, int end) {
+        //取首元素为分区元素
+        int pivotIndex = start;
+        int pivot = array[pivotIndex];
+        // 从左往右当前比pivot大(等于，注意相等时也需要交换)的下标,a[start~low]为比pivot小的元素
+        int low = start;
+        // 从右往左当前比pivot小的下标,a[hight~end]为比pivot大的元素
+        int high = end;
+
+        //注意先从左往右，后从右往左
+        while (low < high) {
+            while (low < high && array[low] < pivot) {
+                low++;
+            }
+            while (high > low && array[high] >= pivot) {
+                high--;
+            }
+            if (low < high) {
+                if (low == pivotIndex) {
+                    pivotIndex = high;
+                }
+                swap(array, low, high);
+            }
+        }
+        if (low != pivotIndex) {
+            swap(array, low, pivotIndex);
+        }
+//        System.out.print("start=" + start + ", end=" + end + ", low=" + low + ",hight=" + high + ", pivot=" + pivot + ": ");
+//        print(a);
+        return low;
+    }
+
+    private static void swap(Integer[] array, int i, int j) {
         if (i == j) {
             return;
         }
@@ -47,15 +89,17 @@ public class FindKth {
 
     public static void main(String[] args) {
         int len = 100;
-        int[] a = ArrayUtil.randArray(len);
+        Integer[] a = ArrayUtil.randArray(len);
         System.out.println("origin:");
         print(a);
-        int[] b = Arrays.copyOf(a, len);
-        int[] c = Arrays.copyOf(a, len);
+        Integer[] b = Arrays.copyOf(a, len);
+        Integer[] c = Arrays.copyOf(a, len);
 
         int k = 10;
         System.out.print("the " + k + "th is ");
         System.out.println(FindKth.findKth(a, k));
+        System.out.print("minheap the " + k + "th is ");
+        System.out.println(FindKth.findKthWithMinHeap(a, k));
 
         QuickSort.quickSort(b);
         System.out.println("quick sort:");

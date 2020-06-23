@@ -40,6 +40,20 @@ public class LinkedHeap<T extends Comparable<? super T>> {
         this.parentIndexPath = new int[32];
     }
 
+    /**
+     * 堆化
+     * @param arr
+     */
+    public void heapify(T[] arr) {
+        if (arr == null) {
+            return;
+        }
+        int len = arr.length;
+        for (int i = 0; i < len; i++) {
+            push(arr[i]);
+        }
+    }
+
     public void push(T data) {
         Node<T> node = new Node<>(data);
         if (head == null) {
@@ -238,24 +252,13 @@ public class LinkedHeap<T extends Comparable<? super T>> {
         }
     }
 
-    private static void printHeap(Node head) {
-        if (head == null) {
-            return;
-        }
-        System.out.print(head.val + " ");
-        printHeap(head.left);
-        printHeap(head.right);
-    }
-
     public static void main(String[] args) {
         LinkedHeap<Integer> maxHeap = new LinkedHeap<>();
-        int len = 1000000;
-        int[] a = ArrayUtil.randArray(len);
+        int len = 100000;
+        Integer[] a = ArrayUtil.randArray(len);
         long start = System.currentTimeMillis();
         System.out.println("len = " + len);
-        for (int i = 0; i < len; i++) {
-            maxHeap.push(a[i]);
-        }
+        maxHeap.heapify(a);
 
 //        printHeap(maxHeap.head);
 //        System.out.println();
@@ -272,9 +275,7 @@ public class LinkedHeap<T extends Comparable<? super T>> {
         }
 
         LinkedHeap<Integer> minHeap = new LinkedHeap<>(false);
-        for (int i = 0; i < len; i++) {
-            minHeap.push(a[i]);
-        }
+        minHeap.heapify(a);
 
 //        printHeap(minHeap.head);
 //        System.out.println();

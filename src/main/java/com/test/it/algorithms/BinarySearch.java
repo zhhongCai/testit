@@ -13,7 +13,7 @@ public class BinarySearch {
      * @param matchValue
      * @return
      */
-    public static int search(int[] a, int matchValue) {
+    public static int search(Integer[] a, int matchValue) {
         int low = 0;
         int high = a.length - 1;
         int mid;
@@ -40,7 +40,7 @@ public class BinarySearch {
      * @param matchValue
      * @return
      */
-    public static int searchFirst(int[] a, int matchValue) {
+    public static int searchFirst(Integer[] a, int matchValue) {
         int low = 0;
         int high = a.length - 1;
         int mid;
@@ -71,7 +71,7 @@ public class BinarySearch {
      * @param matchValue
      * @return
      */
-    public static int searchLast(int[] a, int matchValue) {
+    public static int searchLast(Integer[] a, int matchValue) {
         int low = 0;
         int high = a.length - 1;
         int mid;
@@ -102,7 +102,7 @@ public class BinarySearch {
      * @param matchValue
      * @return
      */
-    public static int searchGreatEqFirst(int[] a, int matchValue) {
+    public static int searchGreatEqFirst(Integer[] a, int matchValue) {
         int low = 0;
         int high = a.length - 1;
         int mid;
@@ -133,7 +133,7 @@ public class BinarySearch {
      * @param matchValue
      * @return
      */
-    public static int searchLessEqLast(int[] a, int matchValue) {
+    public static int searchLessEqLast(Integer[] a, int matchValue) {
         int low = 0;
         int high = a.length - 1;
         int mid;
@@ -156,7 +156,7 @@ public class BinarySearch {
 
     public static void main(String[] args) {
         int len = 15;
-        int[] a = ArrayUtil.randArray(len);
+        Integer[] a = ArrayUtil.randArray(len);
         QuickSort.quickSort(a);
         ArrayUtil.print(a);
 

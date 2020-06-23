@@ -1,6 +1,7 @@
 package com.test.it.algorithms;
 
 /**
+ *  -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:+LogCompilation -XX:PrintAssemblyOptions=intel com.test.it.algorithms.Sorts
  * @Author: theonecai
  * @Date: Create in 2020/6/17 13:33
  * @Description:
@@ -11,7 +12,7 @@ public class Sorts {
      * 冒泡排序
      * @param a
      */
-    public static void bubbleSort(int a[]) {
+    public static void bubbleSort(Integer[] a) {
         int size = a.length;
         int i, j;
         for (i = size - 1; i >= 0; i--) {
@@ -35,7 +36,7 @@ public class Sorts {
      * 将未排序部分的每个元素，插入到已排序部分的适当位置
      * @param a
      */
-    public static void insertSort(int a[]) {
+    public static void insertSort(Integer[] a) {
         int size = a.length;
         int i, j, currentVal;
         for (i = 1; i < size; i++) {
@@ -53,7 +54,7 @@ public class Sorts {
      * 分为两部分：已排序部分,未排序部分
      * 从未排序部分找出最小值，放到已排序部分的尾部
      */
-    public static void selectSort(int a[]) {
+    public static void selectSort(Integer[] a) {
         int size = a.length;
         int i, j, minIndex;
         for (i = 0; i < size; i++) {
@@ -69,7 +70,7 @@ public class Sorts {
         }
     }
 
-    private static void swap(int a[], int i, int j) {
+    private static void swap(Integer[] a, int i, int j) {
         int tmp = a[i];
         a[i] = a[j];
         a[j] = tmp;
@@ -77,7 +78,7 @@ public class Sorts {
 
     public static void main(String[] args) {
         int len = 15;
-        int[] a = ArrayUtil.randArray(len);
+        Integer[] a = ArrayUtil.randArray(len);
         System.out.println("origin:");
         ArrayUtil.print(a);
 
@@ -86,7 +87,7 @@ public class Sorts {
         System.out.println("result:");
         ArrayUtil.print(a);
 
-        int b[] = ArrayUtil.randArray(len + 1);
+        Integer b[] = ArrayUtil.randArray(len + 1);
         ArrayUtil.print(b);
         Sorts.selectSort(b);
         ArrayUtil.print(b);
