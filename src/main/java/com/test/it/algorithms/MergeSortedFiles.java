@@ -10,7 +10,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -74,34 +73,21 @@ public class MergeSortedFiles {
     }
 
     private static Node getNextNode(String currentFile, Map<String, BufferedReader> bufferedReaderMap) throws IOException {
+        if (!bufferedReaderMap.containsKey(currentFile)) {
+            return null;
+        }
         Node node = null;
-        String line;
-        if (bufferedReaderMap.containsKey(currentFile)) {
-            line = bufferedReaderMap.get(currentFile).readLine();
-            if (StringUtils.isNotBlank(line)) {
-                node = new Node(currentFile, line);
-                return node;
-            }
-
-            // 当前文件读完了
-            BufferedReader bf = bufferedReaderMap.remove(currentFile);
-            bf.close();
+        String line = bufferedReaderMap.get(currentFile).readLine();
+        if (StringUtils.isNotBlank(line)) {
+            node = new Node(currentFile, line);
+            return node;
         }
 
-        Iterator<Map.Entry<String, BufferedReader>> it = bufferedReaderMap.entrySet().iterator();
-        Map.Entry<String, BufferedReader> entry = null;
-        while (it.hasNext()) {
-            entry = it.next();
-            line = entry.getValue().readLine();
-            if (StringUtils.isBlank(line)) {
-                entry.getValue().close();
-                it.remove();
-                continue;
-            }
-            node = new Node(entry.getKey(), line);
-            break;
-        }
-        return node;
+        // 当前文件读完了
+        BufferedReader bf = bufferedReaderMap.remove(currentFile);
+        bf.close();
+
+        return null;
     }
 
     private static Node[] getFirstFromEachFile(Map<String, BufferedReader> bufferedReaderMap) throws IOException {
@@ -174,7 +160,7 @@ public class MergeSortedFiles {
     }
 
     private static void genDataFile(String file) throws IOException {
-        int len = 1024000;
+        int len = 100;
         QuickSort<String> strSort = new QuickSort<>();
         Random random = new Random();
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File(file)))) {

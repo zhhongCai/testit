@@ -118,8 +118,9 @@ public class SkipList {
             } else {
                 this.tail = x.backward;
             }
-            while(this.level > 1 && this.head.level[this.level-1].forward == null)
+            while(this.level > 1 && this.head.level[this.level-1].forward == null) {
                 this.level--;
+            }
             this.length--;
 
             return true;

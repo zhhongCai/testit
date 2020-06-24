@@ -1,7 +1,7 @@
 package com.test.it.algorithms;
 
 /**
- *  -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:+LogCompilation -XX:PrintAssemblyOptions=intel com.test.it.algorithms.Sorts
+ *  -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:+LogCompilation -XX:PrintAssemblyOptions=intel
  * @Author: theonecai
  * @Date: Create in 2020/6/17 13:33
  * @Description:
