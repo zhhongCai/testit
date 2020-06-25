@@ -17,6 +17,15 @@ public class ArrayUtil {
         return a;
     }
 
+    public static int[] randIntArray(int size) {
+        int[] a = new int[size];
+        Random random = new Random();
+        for (int i = 0; i < size; i++) {
+            a[i] = random.nextInt(size*3);
+        }
+        return a;
+    }
+
     public static Integer[] randArray() {
         return randArray(new Random().nextInt(100000) + 1);
     }
@@ -31,7 +40,7 @@ public class ArrayUtil {
 
     public static void print(int[] a, int start, int end) {
         for (int i = start; i < end; i++) {
-            System.out.print(a[i] + " ");
+            System.out.print(a[i] + ",");
         }
         System.out.println();
     }

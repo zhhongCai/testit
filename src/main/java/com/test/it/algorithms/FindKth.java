@@ -6,7 +6,7 @@ import static com.test.it.algorithms.ArrayUtil.print;
 
 /**
  * 查找无序数组中第K大的数
- * @Author: caizh
+ * @Author: theonecai
  * @Date: Create in 2019-04-09 18:33
  * @Description:
  */
