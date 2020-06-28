@@ -12,11 +12,6 @@ public class ArrayHeap<T extends Comparable<? super T>> {
     private Object[] heap;
 
     /**
-     * 堆最大容量
-     */
-    private int capacity;
-
-    /**
      * 当前元素个数
      */
     private int size;
@@ -35,8 +30,7 @@ public class ArrayHeap<T extends Comparable<? super T>> {
     }
 
     public ArrayHeap(int capacity, boolean maxHeap) {
-        this.capacity = capacity;
-        heap = new Object[capacity + 1];
+        heap = new Object[capacity];
         this.size = 0;
         this.maxHeap = maxHeap;
     }
@@ -54,11 +48,11 @@ public class ArrayHeap<T extends Comparable<? super T>> {
             return;
         }
         int i = len / 2;
-        for (int j = 1; j <= len; j++) {
-            heap[j] = arr[j - 1];
+        for (int j = 0; j < len; j++) {
+            heap[j] = arr[j];
             size++;
         }
-        for ( ; i >= 1; i--) {
+        for ( ; i >= 0; i--) {
             fixDown(i);
         }
     }
@@ -67,7 +61,7 @@ public class ArrayHeap<T extends Comparable<? super T>> {
         if (size == 0) {
             return null;
         }
-        return (T) heap[1];
+        return (T) heap[0];
     }
 
     public void updateTop(T newData) {
@@ -76,31 +70,32 @@ public class ArrayHeap<T extends Comparable<? super T>> {
             return;
         }
 
-        heap[1] = newData;
+        heap[0] = newData;
 
-        fixDown(1);
+        fixDown(0);
     }
 
     public void push(T data) {
-        heap[++size] = data;
+        heap[size] = data;
         fixUp(size);
+        size++;
     }
 
     public T poll() {
         if (size <= 0) {
             return null;
         }
-        Object data = heap[1];
-        heap[1] = heap[size];
-        heap[size--] = null;
-        fixDown(1);
+        Object data = heap[0];
+        heap[0] = heap[size - 1];
+        heap[--size] = null;
+        fixDown(0);
         return (T)data;
     }
 
     private int fixUp(int index) {
-        int upIndex = index/2;
+        int upIndex = (index - 1)/2;
         int current = index;
-        while (upIndex > 0) {
+        while (upIndex >= 0) {
             if ((maxHeap && compare(heap[current], heap[upIndex]) > 0) ||
                     (!maxHeap && compare(heap[current], heap[upIndex]) < 0)) {
                 swap(current, upIndex);
@@ -108,7 +103,7 @@ public class ArrayHeap<T extends Comparable<? super T>> {
                 break;
             }
             current = upIndex;
-            upIndex = current / 2;
+            upIndex = (current - 1) / 2;
         }
 
         return current;
@@ -125,13 +120,13 @@ public class ArrayHeap<T extends Comparable<? super T>> {
     }
 
     private int fixDown(int index) {
-        int downIndex = index * 2;
+        int downIndex = index * 2 + 1;
 
         int current = index;
-        while (downIndex <= size) {
+        while (downIndex < size) {
             int leftIdx = downIndex;
             int rightIdx = downIndex + 1;
-            if (rightIdx <=size && ((maxHeap && compare(heap[leftIdx], heap[rightIdx]) < 0) ||
+            if (rightIdx < size && ((maxHeap && compare(heap[leftIdx], heap[rightIdx]) < 0) ||
                     (!maxHeap && compare(heap[leftIdx], heap[rightIdx]) > 0))) {
                 downIndex = rightIdx;
             }
@@ -142,13 +137,13 @@ public class ArrayHeap<T extends Comparable<? super T>> {
                 break;
             }
             current = downIndex;
-            downIndex = current * 2;
+            downIndex = current * 2 + 1;
         }
         return current;
     }
 
     public static void main(String[] args) {
-        int len = 100;
+        int len = 1000;
         ArrayHeap<Integer> maxHeap = new ArrayHeap<>(len);
         Integer[] a = ArrayUtil.randArray(len);
         long start = System.currentTimeMillis();

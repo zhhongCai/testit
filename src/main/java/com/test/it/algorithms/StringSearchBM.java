@@ -33,7 +33,7 @@ public class StringSearchBM {
         return badCharLastIndex;
     }
 
-    public static int bmSearch(char[] str, char[] pattern) {
+    public static int search(char[] str, char[] pattern) {
         int[] badCharLastIndex = preBadCharLastIndex(pattern);
 
         int[] suffix = new int[pattern.length];
@@ -135,13 +135,13 @@ public class StringSearchBM {
 
     public static void main(String[] args) {
         String str = RandomStringUtil.randomString(28);
-        String pattern = str.substring(11, 28);
+        String pattern = str.substring(11, 20);
 
-        int p = StringSearchBM.bmSearch(str.toCharArray(), pattern.toCharArray());
+        int p = StringSearchBM.search(str.toCharArray(), pattern.toCharArray());
         System.out.println("source str: " + str);
         System.out.println("pattern   : " + pattern);
         if (p != -1) {
-            System.out.println("find position: " + p + ": " + str.substring(0, p) + " ^" + pattern + "$ " + str.substring(p + pattern.length()));
+            System.out.println("find position: " + p + ": " + str.substring(0, p) + " " + pattern + " " + str.substring(p + pattern.length()));
         } else {
             System.out.println("notfound");
         }
