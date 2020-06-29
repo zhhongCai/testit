@@ -1,5 +1,10 @@
 package com.test.it.algorithms;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  *  -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:+LogCompilation -XX:PrintAssemblyOptions=intel
  * @Author: theonecai
@@ -76,20 +81,116 @@ public class Sorts {
         a[j] = tmp;
     }
 
+    /**
+     * 桶排序
+     * 数据均由发布
+     * 求出最大、最小值
+     * 分桶：对每个桶再进行排序
+     * @param a
+     */
+    public static void bucketSort(int[] a) {
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < a.length; i++) {
+            if (max < a[i]) {
+                max = a[i];
+            }
+            if (min > a[i]) {
+                min = a[i];
+            }
+        }
+
+        int n = a.length + 1;
+
+        List<List<Integer>> buckets = new ArrayList<>(n);
+        for (int i = 0; i < n; i++) {
+            buckets.add(new ArrayList<>());
+        }
+
+        for (int e : a) {
+            int cn = help(e, n, min);
+            buckets.get(cn).add(e);
+        }
+        for (int i = 0; i < n; i++) {
+            List<Integer> list = buckets.get(i);
+            Collections.sort(list);
+
+//            ArrayUtil.print(list.toArray(new Integer[0]));
+        }
+    }
+
+    private static int help(int e, int n, int min) {
+        return e % n;
+    }
+
+    /**
+     * 基数排序
+     * @param a
+     */
+    public static void baseCountSort(int[] a) {
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < a.length; i++) {
+            if (max < a[i]) {
+                max = a[i];
+            }
+            if (min > a[i]) {
+                min = a[i];
+            }
+        }
+
+        int[] count = new int[max - min + 1];
+        Arrays.fill(count, 0);
+
+        for (int e : a) {
+            count[e - min]++;
+        }
+
+        int c;
+        int j = 0;
+        for (int i = 0; i < count.length; i++) {
+            c = count[i];
+            while (c > 0) {
+                a[j++] = i + min;
+                c--;
+            }
+        }
+    }
+
     public static void main(String[] args) {
         int len = 15;
         Integer[] a = ArrayUtil.randArray(len);
         System.out.println("origin:");
-        ArrayUtil.print(a);
+//        ArrayUtil.print(a);
 
-        Sorts.selectSort(a);
+        long start = System.currentTimeMillis();
+//        Sorts.selectSort(a);
+        System.out.println("cost time:" + (System.currentTimeMillis() - start));
 
         System.out.println("result:");
-        ArrayUtil.print(a);
+//        ArrayUtil.print(a);
 
         Integer b[] = ArrayUtil.randArray(len + 1);
-        ArrayUtil.print(b);
-        Sorts.selectSort(b);
-        ArrayUtil.print(b);
+//        ArrayUtil.print(b);
+        start = System.currentTimeMillis();
+//        Sorts.selectSort(b);
+        System.out.println("cost time:" + (System.currentTimeMillis() - start));
+//        ArrayUtil.print(b);
+
+        int c[] = ArrayUtil.randIntArray(len + 1);
+        System.out.println("bucket sort before:");
+//        ArrayUtil.print(c);
+        start = System.currentTimeMillis();
+        Sorts.bucketSort(c);
+        System.out.println("cost time:" + (System.currentTimeMillis() - start));
+        System.out.println("bucket sort result:");
+//        ArrayUtil.print(b);
+
+        int d[] = ArrayUtil.randIntArray(len + 1);
+        ArrayUtil.print(d);
+        start = System.currentTimeMillis();
+        Sorts.baseCountSort(d);
+        System.out.println("cost time:" + (System.currentTimeMillis() - start));
+        ArrayUtil.print(d);
     }
 }

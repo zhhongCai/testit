@@ -12,7 +12,7 @@ public class ArrayUtil {
         Integer[] a = new Integer[size];
         Random random = new Random();
         for (int i = 0; i < size; i++) {
-            a[i] = random.nextInt(size*3);
+            a[i] = random.nextInt(size);
         }
         return a;
     }
@@ -21,7 +21,7 @@ public class ArrayUtil {
         int[] a = new int[size];
         Random random = new Random();
         for (int i = 0; i < size; i++) {
-            a[i] = random.nextInt(size*3);
+            a[i] = random.nextInt(size);
         }
         return a;
     }
