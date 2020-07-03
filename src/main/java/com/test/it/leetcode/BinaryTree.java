@@ -1,8 +1,11 @@
 package com.test.it.leetcode;
 
+import org.mortbay.util.ArrayQueue;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -172,6 +175,54 @@ public class BinaryTree {
         }
     }
 
+    /**
+     * BFS 遍历树
+     * @param root
+     * @return
+     */
+    public List<Integer> bfsTraversal(TreeNode root) {
+        Queue<TreeNode> queue = new ArrayQueue<>();
+        List<Integer> result = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            result.add(node.val);
+
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * DFS 遍历树 == 前序遍历
+     * @param root
+     * @return
+     */
+    public List<Integer> dfsTraversal(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        List<Integer> result = new LinkedList<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+            result.add(node.val);
+
+            if (node.right != null) {
+                stack.push(node.right);
+            }
+            if (node.left != null) {
+                stack.push(node.left);
+            }
+        }
+
+        return result;
+    }
+
+
     public static void main(String[] args) {
         TreeNode root = new TreeNode(7);
         root.left = new TreeNode(3);
@@ -189,6 +240,14 @@ public class BinaryTree {
         list.forEach(e -> System.out.print(e + " "));
         System.out.println();
         list = tree.postorderTraversal(root);
+        list.forEach(e -> System.out.print(e + " "));
+        System.out.println();
+
+        list = tree.bfsTraversal(root);
+        list.forEach(e -> System.out.print(e + " "));
+        System.out.println();
+
+        list = tree.dfsTraversal(root);
         list.forEach(e -> System.out.print(e + " "));
         System.out.println();
     }

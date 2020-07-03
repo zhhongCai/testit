@@ -26,7 +26,7 @@ public class StringAndStringBuilderbenchmark {
     @Benchmark
     public void stringAdd() {
         String str = "";
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10000; i++) {
             str += i;
         }
 //        System.out.println(str);
@@ -35,7 +35,7 @@ public class StringAndStringBuilderbenchmark {
     @Benchmark
     public void stringBuilderAdd() {
         StringBuilder str = new StringBuilder();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10000; i++) {
             str.append(i);
         }
 //        System.out.println(str);

@@ -1,5 +1,7 @@
 package com.test.it.algorithms;
 
+import org.junit.Assert;
+
 import java.util.Arrays;
 
 /**
@@ -27,18 +29,24 @@ public class StringSearchBM {
             badCharLastIndex[pattern[i]] = i;
         }
 
-        for (int i = 0; i < pattern.length; i++) {
-            System.out.println("badCharLastIndex: '" + pattern[i] + "', " + badCharLastIndex[pattern[i]]);
-        }
         return badCharLastIndex;
     }
 
     public static int search(char[] str, char[] pattern) {
         int[] badCharLastIndex = preBadCharLastIndex(pattern);
 
+//        for (int i = 0; i < pattern.length; i++) {
+//            System.out.println("badCharLastIndex: '" + pattern[i] + "', " + badCharLastIndex[pattern[i]]);
+//        }
+
         int[] suffix = new int[pattern.length];
         boolean[] prefix = new boolean[pattern.length];
         preGoodShift(pattern, suffix, prefix);
+
+//        for (int i = 0; i < pattern.length; i++) {
+//            System.out.print("suffix[" + i + "]=" + suffix[i]);
+//            System.out.println(",prefix[" + i + "]=" + prefix[i]);
+//        }
 
         for (int i = pattern.length - 1; i < str.length;) {
             int j;
@@ -127,23 +135,21 @@ public class StringSearchBM {
                 prefix[i] = true;
             }
         }
-        for (int i = 0; i < pattern.length; i++) {
-            System.out.print("suffix[" + i + "]=" + suffix[i]);
-            System.out.println(",prefix[" + i + "]=" + prefix[i]);
-        }
+
     }
 
     public static void main(String[] args) {
-        String str = RandomStringUtil.randomString(28);
-        String pattern = str.substring(11, 20);
+        String str = RandomStringUtil.randomString(200000008);
+        String pattern = str.substring(10000001, 20000000);
 
         int p = StringSearchBM.search(str.toCharArray(), pattern.toCharArray());
-        System.out.println("source str: " + str);
-        System.out.println("pattern   : " + pattern);
-        if (p != -1) {
-            System.out.println("find position: " + p + ": " + str.substring(0, p) + " " + pattern + " " + str.substring(p + pattern.length()));
-        } else {
-            System.out.println("notfound");
-        }
+        Assert.assertEquals(10000001, p);
+//        System.out.println("source str: " + str);
+//        System.out.println("pattern   : " + pattern);
+//        if (p != -1) {
+//            System.out.println("find position: " + p + ": " + str.substring(0, p) + " " + pattern + " " + str.substring(p + pattern.length()));
+//        } else {
+//            System.out.println("notfound");
+//        }
     }
 }
