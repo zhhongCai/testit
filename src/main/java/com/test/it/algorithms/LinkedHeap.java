@@ -254,7 +254,7 @@ public class LinkedHeap<T extends Comparable<? super T>> {
 
     public static void main(String[] args) {
         LinkedHeap<Integer> maxHeap = new LinkedHeap<>();
-        int len = 100000;
+        int len = 200000;
         Integer[] a = ArrayUtil.randArray(len);
         long start = System.currentTimeMillis();
         System.out.println("len = " + len);
@@ -263,16 +263,16 @@ public class LinkedHeap<T extends Comparable<? super T>> {
 //        printHeap(maxHeap.head);
 //        System.out.println();
 
-        int pre = Integer.MAX_VALUE;
-        int current;
-        for (int i = 0; i < len; i++) {
-            current = maxHeap.poll();
-            if (pre < current) {
-                System.out.println("maxHeap: pre = " + pre + ", current = " + current);
-                return;
-            }
-            pre = current;
-        }
+//        int pre = Integer.MAX_VALUE;
+//        int current;
+//        for (int i = 0; i < len; i++) {
+//            current = maxHeap.poll();
+//            if (pre < current) {
+//                System.out.println("maxHeap: pre = " + pre + ", current = " + current);
+//                return;
+//            }
+//            pre = current;
+//        }
 
         LinkedHeap<Integer> minHeap = new LinkedHeap<>(false);
         minHeap.heapify(a);
@@ -280,15 +280,15 @@ public class LinkedHeap<T extends Comparable<? super T>> {
 //        printHeap(minHeap.head);
 //        System.out.println();
 
-        pre = Integer.MIN_VALUE;
-        for (int i = 0; i < len; i++) {
-            current = minHeap.poll();
-            if (pre > current) {
-                System.out.println("minHeap: pre = " + pre + ", current = " + current);
-                return;
-            }
-            pre = current;
-        }
+//        pre = Integer.MIN_VALUE;
+//        for (int i = 0; i < len; i++) {
+//            current = minHeap.poll();
+//            if (pre > current) {
+//                System.out.println("minHeap: pre = " + pre + ", current = " + current);
+//                return;
+//            }
+//            pre = current;
+//        }
         System.out.println("done,costtime=" + (System.currentTimeMillis() - start));
     }
 }
