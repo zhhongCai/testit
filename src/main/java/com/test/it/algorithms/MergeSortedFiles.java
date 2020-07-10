@@ -47,7 +47,7 @@ public class MergeSortedFiles {
                 }
 
                 newNode = getNextNode(top.fileName, bufferedReaderMap);
-                // 所有文件都读完了
+                // 文件都读完了
                 if (newNode == null) {
                     minHeap.poll();
                     continue;

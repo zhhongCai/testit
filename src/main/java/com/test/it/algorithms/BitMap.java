@@ -1,7 +1,6 @@
 package com.test.it.algorithms;
 
 import org.junit.Assert;
-import sun.jvm.hotspot.utilities.Bits;
 
 /**
  * @see sun.jvm.hotspot.utilities.BitMap
