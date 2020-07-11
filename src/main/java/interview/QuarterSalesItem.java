@@ -3,7 +3,15 @@ package interview;
 public class QuarterSalesItem {
 	private int quarter;
 	private double value;
-	
+
+	public QuarterSalesItem() {
+	}
+
+	public QuarterSalesItem(int quarter, double value) {
+		this.quarter = quarter;
+		this.value = value;
+	}
+
 	public int getQuarter() {
 		return quarter;
 	}

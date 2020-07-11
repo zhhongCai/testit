@@ -1,19 +1,12 @@
 package interview;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Utils {
-
-	private final static ExtensionNameComparator NAME_COMPARATOR = new ExtensionNameComparator();
-	private final static ExtensionExtTypeComparator EXT_TYPE_COMPARATOR = new ExtensionExtTypeComparator();
 
 	/**
 	 * Question1
@@ -27,7 +20,7 @@ public class Utils {
 	 * @return
 	 */
 	public static List<Extension> sortByName(List<Extension> extensions) {
-		return doSort(extensions, NAME_COMPARATOR);
+		return doSort(extensions, ExtensionNameComparator.INSTANCE);
 	}
 
 	/**
@@ -41,22 +34,23 @@ public class Utils {
 	 * @return
 	 */
 	public static List<Extension> sortByExtType(List<Extension> extensions) {
-		return doSort(extensions, EXT_TYPE_COMPARATOR);
+		return doSort(extensions, ExtensionExtTypeComparator.INSTANCE);
 	}
 
 	/**
-	 * sort extensions by comparator
-	 * @param extensions
+	 * sort list by comparator
+	 *
+	 * @param list
 	 * @param comparator
 	 * @return
 	 */
-	private static List<Extension> doSort(List<Extension> extensions, Comparator<Extension> comparator) {
-		if (extensions == null || extensions.size() == 0) {
-			return extensions;
+	private static <T> List<T> doSort(List<T> list, Comparator<T> comparator) {
+		if (isEmpty(list)) {
+			return list;
 		}
 
-		extensions.sort(comparator);
-		return extensions;
+		list.sort(comparator);
+		return list;
 	}
 
 	/**
@@ -68,29 +62,7 @@ public class Utils {
 	 * @return sorted saleItems
 	 */
 	public static List<QuarterSalesItem> sumByQuarter(List<SaleItem> saleItems) {
-		if (saleItems == null || saleItems.size() == 0) {
-			return Collections.emptyList();
-		}
-
-		QuarterEnum quarter;
-		QuarterSalesItem item;
-		Map<Integer, QuarterSalesItem> quarterSalesItemMap = new HashMap<>(4);
-
-		for (SaleItem saleItem : saleItems) {
-			quarter = QuarterEnum.quarterFrom(saleItem.getMonth());
-
-			item = quarterSalesItemMap.get(quarter.ordinal());
-			if (item == null) {
-				item = new QuarterSalesItem();
-				item.setQuarter(quarter.ordinal());
-				item.setValue(0.0);
-
-				quarterSalesItemMap.put(quarter.ordinal(), item);
-			}
-			item.setValue(item.getValue() + saleItem.getSaleNumbers());
-		}
-
-		return new ArrayList<>(quarterSalesItemMap.values());
+		return SumByQuarterComputer.INSTANCE.compute(saleItems);
 	}
 
 	/**
@@ -102,33 +74,28 @@ public class Utils {
 	 * @return sorted saleItems
 	 */
 	public static List<QuarterSalesItem> maxByQuarter(List<SaleItem> saleItems) {
-		if (saleItems == null || saleItems.size() == 0) {
-			return Collections.emptyList();
-		}
+		return MaxByQuarterComputer.INSTANCE.compute(saleItems);
+	}
 
-		QuarterEnum quarter;
-		QuarterSalesItem item;
-		// quarter as key
-		Map<Integer, QuarterSalesItem> quarterSalesItemMap = new HashMap<>(4);
+	/**
+	 * list is null or it's size is zero return true
+	 *
+	 * @param list
+	 * @param <T>
+	 * @return
+	 */
+	public static <T> boolean isEmpty(List<T> list) {
+		return list == null || list.size() == 0;
+	}
 
-		for (SaleItem saleItem : saleItems) {
-			quarter = QuarterEnum.quarterFrom(saleItem.getMonth());
-
-			item = quarterSalesItemMap.get(quarter);
-			if (item == null) {
-				item = new QuarterSalesItem();
-				item.setQuarter(quarter.ordinal());
-				item.setValue(saleItem.getSaleNumbers());
-
-				quarterSalesItemMap.put(quarter.ordinal(), item);
-				continue;
-			}
-			if (saleItem.getSaleNumbers() > item.getValue()) {
-				item.setValue(saleItem.getSaleNumbers());
-			}
-		}
-
-		return new ArrayList<>(quarterSalesItemMap.values());
+	/**
+	 * array is null or it's length is zero return true
+	 *
+	 * @param array
+	 * @return
+	 */
+	private static boolean isEmpty(int[] array) {
+		return array == null || array.length == 0;
 	}
 
 	/**
@@ -143,10 +110,10 @@ public class Utils {
 	 * @return keys in allKeys and not in usedKeys
 	 */
 	public static int[] getUnUsedKeys(int[] allKeys, int[] usedKeys) {
-		if (allKeys == null || allKeys.length == 0) {
+		if (isEmpty(allKeys)) {
 			return new int[0];
 		}
-		if (usedKeys == null || usedKeys.length == 0) {
+		if (isEmpty(usedKeys)) {
 			return allKeys;
 		}
 
