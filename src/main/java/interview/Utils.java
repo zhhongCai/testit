@@ -3,10 +3,12 @@ package interview;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Utils {
+	private final static String EMPTY_STR = "";
 
 	/**
 	 * Question1
@@ -98,6 +100,10 @@ public class Utils {
 		return array == null || array.length == 0;
 	}
 
+	public static int compare(String a, String b) {
+		return Optional.ofNullable(a).orElse(EMPTY_STR)
+				.compareTo(Optional.ofNullable(b).orElse(EMPTY_STR));
+	}
 	/**
 	 * Question5
 	 *

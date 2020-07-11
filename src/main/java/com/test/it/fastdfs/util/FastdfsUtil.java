@@ -39,7 +39,7 @@ public class FastdfsUtil {
         }
         ClientGlobal.initByProperties(conf);
         trackerClient = new TrackerClient();
-        trackerServer = trackerClient.getConnection();
+        trackerServer = trackerClient.getTrackerServer();
         storageServer = null;
         storageClient = new StorageClient1(trackerServer, storageServer);
     }

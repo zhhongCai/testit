@@ -7,8 +7,15 @@ public class SaleItem {
 	private Date date;
 	private String transationId;
 	private double saleNumbers;
-	
-	
+
+	public SaleItem() {
+	}
+
+	public SaleItem(int month, double saleNumbers) {
+		this.month = month;
+		this.saleNumbers = saleNumbers;
+	}
+
 	public int getMonth() {
 		return month;
 	}

@@ -485,14 +485,12 @@
           <artifactId>jboss-marshalling-serial</artifactId>
           <version>1.4.11.Final</version>
       </dependency>
-<!--
 
       <dependency>
           <groupId>org.csource</groupId>
           <artifactId>fastdfs-client-java</artifactId>
-          <version>1.27-SNAPSHOT</version>
+          <version>1.29-SNAPSHOT</version>
       </dependency>
--->
 
       <!--mapStruct依赖-->
       <dependency>
