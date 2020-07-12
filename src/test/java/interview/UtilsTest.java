@@ -13,6 +13,11 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * @Author: zhenghong.cai
+ * @Date: Create in 2020/7/11 19:31
+ * @Description:
+ */
 public class UtilsTest {
 
     private int[] allKeys;
@@ -28,13 +33,18 @@ public class UtilsTest {
     @Before
     public void before() {
         allKeys = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-        extTypes = new ArrayList<>(ExtensionExtTypeComparator.EXT_TYPE_ORDER_MAP.keySet());
-        extTypeOrderMap = ExtensionExtTypeComparator.EXT_TYPE_ORDER_MAP;
+        extTypes = new ArrayList<>(ExtensionComparators.EXT_TYPE_ORDER_MAP.keySet());
+        extTypeOrderMap = ExtensionComparators.EXT_TYPE_ORDER_MAP;
 
-        extensions = genExtensionTestData(10);
+        extensions = genExtensions(10);
         saleItems = genSaleItems(12);
     }
 
+    /**
+     * generate test data
+     * @param n
+     * @return
+     */
     private List<SaleItem> genSaleItems(int n) {
         List<SaleItem> list = new ArrayList<>(n);
 
@@ -53,7 +63,7 @@ public class UtilsTest {
      * @param count
      * @return
      */
-    private List<Extension> genExtensionTestData(int count) {
+    private List<Extension> genExtensions(int count) {
         List<Extension> list = new ArrayList<>(count);
         Random random = new Random();
         int r;
@@ -190,7 +200,7 @@ public class UtilsTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void test_sortByExtType_illegalExtType() {
-        List<Extension> list = genExtensionTestData(2);
+        List<Extension> list = genExtensions(2);
         list.get(0).setExtType("users");
         List<Extension> sortedList = Utils.sortByExtType(list);
     }

@@ -22,7 +22,7 @@ public class Utils {
 	 * @return
 	 */
 	public static List<Extension> sortByName(List<Extension> extensions) {
-		return doSort(extensions, ExtensionNameComparator.INSTANCE);
+		return doSort(extensions, ExtensionComparators.NAME_COMPARATOR);
 	}
 
 	/**
@@ -36,7 +36,7 @@ public class Utils {
 	 * @return
 	 */
 	public static List<Extension> sortByExtType(List<Extension> extensions) {
-		return doSort(extensions, ExtensionExtTypeComparator.INSTANCE);
+		return doSort(extensions, ExtensionComparators.EXT_TYPE_COMPARATOR);
 	}
 
 	/**

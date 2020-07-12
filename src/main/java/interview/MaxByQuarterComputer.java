@@ -5,6 +5,11 @@ import com.sun.istack.internal.NotNull;
 import java.util.Map;
 
 
+/**
+ * @Author: zhenghong.cai
+ * @Date: Create in 2020/7/11 21:31
+ * @Description:
+ */
 public class MaxByQuarterComputer implements Computer {
 
     public final static MaxByQuarterComputer INSTANCE = new MaxByQuarterComputer();
