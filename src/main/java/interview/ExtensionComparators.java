@@ -13,8 +13,8 @@ import java.util.Optional;
  */
 public class ExtensionComparators {
 
-    public final static ExtensionExtTypeComparator EXT_TYPE_COMPARATOR = new ExtensionExtTypeComparator();
-    public final static ExtensionNameComparator NAME_COMPARATOR = new ExtensionNameComparator();
+    public static final ExtensionExtTypeComparator EXT_TYPE_COMPARATOR = new ExtensionExtTypeComparator();
+    public static final ExtensionNameComparator NAME_COMPARATOR = new ExtensionNameComparator();
 
     public static final Map<String, Integer> EXT_TYPE_ORDER_MAP;
 
@@ -31,16 +31,16 @@ public class ExtensionComparators {
 
     static class ExtensionExtTypeComparator implements Comparator<Extension> {
 
-            /**
-             * sort by firstName + lastName + ext,
-             * if firstName is the same then sort by lastName and
-             * ext, please note lastName and ext can be empty string or null.
-             * @param first
-             * @param second
-             * @return
-             */
-            @Override
-            public int compare (Extension first, Extension second){
+        /**
+         * sort by firstName + lastName + ext,
+         * if firstName is the same then sort by lastName and
+         * ext, please note lastName and ext can be empty string or null.
+         * @param first
+         * @param second
+         * @return
+         */
+        @Override
+        public int compare (Extension first, Extension second){
             return Optional.ofNullable(EXT_TYPE_ORDER_MAP.get(first.getExtType()))
                     .orElseThrow(() -> new IllegalArgumentException("unknown extType " + first.getExtType()))
                     .compareTo(Optional.ofNullable(EXT_TYPE_ORDER_MAP.get(second.getExtType()))
