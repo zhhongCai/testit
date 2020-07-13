@@ -31,9 +31,9 @@ public class GenerateParenthesis {
     public void f(int currentIndex, int leftCount, int rightCount, char ch) {
         str[currentIndex] = ch;
         if (currentIndex == str.length - 1) {
-//            if (isOk(currentIndex)) {
+            if (isOk(currentIndex)) {
                 result.add(String.valueOf(str));
-//            }
+            }
             return;
         }
         if (leftCount > 0) {
@@ -65,7 +65,7 @@ public class GenerateParenthesis {
 
     public static void main(String[] args) {
         GenerateParenthesis gen = new GenerateParenthesis();
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < 5; i++) {
             List<String> list = gen.generateParenthesis(i);
             for (String s : list) {
                 System.out.println(s);
