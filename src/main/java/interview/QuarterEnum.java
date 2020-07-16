@@ -4,7 +4,7 @@ package interview;
 /**
  * Quarter enum
  *
- * @Author: zhenghong.cai
+ * @Author: theonecai
  * @Date: Create in 2020/7/10 21:11
  * @Description:
  */
