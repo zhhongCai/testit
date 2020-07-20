@@ -31,10 +31,11 @@ public class ExtensionComparators {
 
     static class ExtensionExtTypeComparator implements Comparator<Extension> {
 
+
         /**
-         * sort by firstName + lastName + ext,
-         * if firstName is the same then sort by lastName and
-         * ext, please note lastName and ext can be empty string or null.
+         * sort extType, extType is a string and can
+         * be "User", "Dept", "AO", "TMO", "Other",
+         * sort by User > Dept > AO > TMO > Other;
          * @param first
          * @param second
          * @return
@@ -42,7 +43,7 @@ public class ExtensionComparators {
         @Override
         public int compare (Extension first, Extension second){
             return Optional.ofNullable(EXT_TYPE_ORDER_MAP.get(first.getExtType()))
-                    .orElseThrow(() -> new IllegalArgumentException("unknown extType " + first.getExtType()))
+                        .orElseThrow(() -> new IllegalArgumentException("unknown extType " + first.getExtType()))
                     .compareTo(Optional.ofNullable(EXT_TYPE_ORDER_MAP.get(second.getExtType()))
                             .orElseThrow(() -> new IllegalArgumentException("unknown extType " + second.getExtType())));
         }
@@ -50,10 +51,11 @@ public class ExtensionComparators {
 
     static class ExtensionNameComparator implements Comparator<Extension> {
 
+
         /**
-         * sort extType, extType is a string and can
-         * be "User", "Dept", "AO", "TMO", "Other",
-         * sort by User > Dept > AO > TMO > Other;
+         * sort by firstName + lastName + ext,
+         * if firstName is the same then sort by lastName and
+         * ext, please note lastName and ext can be empty string or null.
          * @param first
          * @param second
          * @return

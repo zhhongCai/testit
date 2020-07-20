@@ -1,16 +1,10 @@
 package com.test.it.leetcode;
 
-import com.google.common.base.Charsets;
-import com.google.common.hash.BloomFilter;
-import com.google.common.hash.Funnels;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  *
@@ -19,7 +13,7 @@ import java.util.Set;
  * @Date: Create in 2020/7/13 20:35
  * @Description:
  */
-public class PermuteWithDumplicateNums {
+public class PermuteWithDuplicateNums {
 
     private List<List<Integer>> lists;
 //    private Set<String> existList;
@@ -89,7 +83,7 @@ public class PermuteWithDumplicateNums {
     }
 
     public static void main(String[] args) {
-        PermuteWithDumplicateNums p = new PermuteWithDumplicateNums();
+        PermuteWithDuplicateNums p = new PermuteWithDuplicateNums();
         int[] arr = {1,2,1};
         long a = System.currentTimeMillis();
         List<List<Integer>> lists = p.permuteUnique(arr);
