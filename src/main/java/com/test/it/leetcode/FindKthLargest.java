@@ -33,7 +33,7 @@ public class FindKthLargest {
 
     private static int partition(int[] array, int start, int end) {
         //取首元素为分区元素
-        int pivotIndex = start;
+        int pivotIndex = start + (end - start > 0 ? new Random().nextInt(end - start) : 0);
         int pivot = array[pivotIndex];
         // 从左往右当前比pivot大(等于，注意相等时也需要交换)的下标,a[start~low]为比pivot小的元素
         int low = start;
@@ -187,7 +187,7 @@ public class FindKthLargest {
         int kth;
         int[] arr;
         int n = 0;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1000; i++) {
             n = 10 + i;
             arr = ArrayUtil.randIntArray(n);
             kth = largestK.findKthLargest(arr, n - i);
