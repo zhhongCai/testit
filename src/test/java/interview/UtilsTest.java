@@ -1,5 +1,11 @@
 package interview;
 
+import interview.rc.Extension;
+import interview.rc.ExtensionComparators;
+import interview.rc.QuarterEnum;
+import interview.rc.QuarterSalesItem;
+import interview.rc.SaleItem;
+import interview.rc.Utils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
