@@ -4,16 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * leetcode 131
+ *
  * @Author: theonecai
  * @Date: Create in 2020/7/24 21:31
  * @Description:
  */
 public class PalindromeStr {
 
-    public List<List<String>> palindromeSubStr(String str) {
+    public List<List<String>> partition(String s) {
         List<List<String>> lists = new ArrayList<>();
 
-        palindromeSubStr(str, 0, new ArrayList<>(str.length()), lists);
+        palindromeSubStr(s, 0, new ArrayList<>(s.length()), lists);
 
         return lists;
     }
@@ -24,7 +26,7 @@ public class PalindromeStr {
             return;
         }
 
-        for (int i = 1; i < str.length(); i++) {
+        for (int i = 1; i <= str.length(); i++) {
             if (index + i > str.length()) {
                 return;
             }
@@ -54,7 +56,7 @@ public class PalindromeStr {
 
     public static void main(String[] args) {
         PalindromeStr palindromeStr = new PalindromeStr();
-        List<List<String>> list = palindromeStr.palindromeSubStr("aacabacaa");
+        List<List<String>> list = palindromeStr.partition("a");
         list.forEach(System.out::println);
     }
 }
