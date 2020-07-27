@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * leetcode 1307
+ *
  * @Author: theonecai
  * @Date: Create in 2020/7/22 21:15
  * @Description:
@@ -42,15 +44,15 @@ public class WordPlusEq {
     private long sum = 0;
     private String[] reversedWords;
     private String reversedResult;
+    private int[] levelCharCount;
 
     public boolean isSolvable(String[] words, String result) {
         init(words, result);
+
         if (maxLen > result.length() || maxLen < result.length() - 1) {
             return false;
         }
         maxLen = result.length();
-
-        reverse(words, result);
 
         combination(10, chars.size(), new int[chars.size()], 0, new boolean[10]);
 
@@ -63,23 +65,34 @@ public class WordPlusEq {
         chars = new ArrayList<>(10);
         firstChars = new boolean[26];
         charMap = new int[26];
+        levelCharCount = new int[result.length()];
+
+        reverse(words, result);
 
         for (String word : words) {
             if (maxLen < word.length()) {
                 maxLen = word.length();
             }
-            for (int i = 0; i < word.toCharArray().length; i++) {
-                if (!chars.contains(word.charAt(i))) {
-                    chars.add(word.charAt(i));
-                }
-                if (i == 0) {
-                    firstChars[word.charAt(i) - 'A'] = true;
+        }
+        int level;
+        for (int i = 0; i < reversedResult.length(); i++) {
+            level = 0;
+            for (String reversedWord : reversedWords) {
+                if (i < reversedWord.length()) {
+                    level++;
+                    if (i == reversedWord.length() - 1) {
+                        firstChars[reversedWord.charAt(i) - 'A'] = true;
+                    }
+                    if (!chars.contains(reversedWord.charAt(i))) {
+                        chars.add(reversedWord.charAt(i));
+                    }
                 }
             }
-        }
-        for (char c : result.toCharArray()) {
-            if (!chars.contains(c)) {
-                chars.add(c);
+
+            level++;
+            levelCharCount[i] = level;
+            if (!chars.contains(reversedResult.charAt(i))) {
+                chars.add(reversedResult.charAt(i));
             }
         }
     }
@@ -118,11 +131,44 @@ public class WordPlusEq {
                 continue;
             }
             head[index] = i;
+            if (!checkLevel(head, index)) {
+                continue;
+            }
             visited[i] = true;
             combination(n, k - 1, head, index + 1, visited);
             visited[i] = false;
         }
     }
+
+    private boolean checkLevel(int[] head, int index) {
+        if (index == 0) {
+            return true;
+        }
+
+        for (int i = 0; i <= index; i++) {
+            charMap[chars.get(i) - 'A'] = head[i];
+        }
+        sumLeft = 0;
+        sum = 0;
+
+        int levels = 0;
+        for (int i = 0; i < maxLen; i++) {
+            if (levelCharCount[i] == 0) {
+                break;
+            }
+
+            levels += levelCharCount[i];
+            if (index + 1 >= levels) {
+                if (!calculateAt(reversedWords, reversedResult, i)) {
+                    return false;
+                }
+            } else {
+                break;
+            }
+        }
+        return true;
+    }
+
 
     private void checkCurrentCharMap(int[] head, String[] words, String result) {
         for (int i = 0; i < chars.size(); i++) {
