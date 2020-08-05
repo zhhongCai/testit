@@ -2,11 +2,11 @@ package com.test.it.leetcode.stack;
 
 import org.junit.Assert;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 /**
+ * leetcode 85
+ *
  * @Author: theonecai
  * @Date: Create in 2020/7/30 21:43
  * @Description:
@@ -18,32 +18,33 @@ public class MaxRectangleMatrix {
             return 0;
         }
 
-        List<int[]> heights = new ArrayList<>(m.length);
+        // +1 保存每段间隔高度0
+        int fixRow = m.length + 1;
+        int[] heights = new int[fixRow * m[0].length];
+        int index = 0;
         for (int col = 0; col < m[0].length; col++) {
-            int[] height = new int[m.length];
             for (int row = 0; row < m.length; row++) {
                 if (m[row][col] == '0') {
-                    height[row] = 0;
+                    heights[index++] = 0;
                 } else {
                     if (col > 0 && m[row][col - 1] == '1') {
-                        height[row] = heights.get(col - 1)[row] - 1;
+                        // 前1列的高度-1
+                        heights[index] = heights[index - fixRow] - 1;
+                        index++;
                         continue;
                     }
                     int colIndex = col + 1;
                     while (colIndex < m[0].length && m[row][colIndex] == '1') {
                         colIndex++;
                     }
-                    height[row] = colIndex - col;
+                    heights[index++] = colIndex - col;
                 }
             }
-            heights.add(height);
-        }
-        int max = 0;
-        for (int i = 0; i < m[0].length; i++) {
-            max = Math.max(max, largestRectangleArea(heights.get(i)));
+            // 用高度0隔开每段
+            heights[index++] = 0;
         }
 
-        return max;
+        return largestRectangleArea(heights);
     }
 
     public int largestRectangleArea(int[] heights) {
