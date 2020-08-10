@@ -3,13 +3,13 @@ package com.test.it.leetcode.stack;
 import org.junit.Assert;
 
 /**
- * leetcode 976
+ * leetcode 946
  *
  * @Author: theonecai
  * @Date: Create in 2020/8/5 19:48
  * @Description:
  */
-public class CheckStack {
+public class ValidateStackSequences {
 
     public boolean validateStackSequences(int[] pushed, int[] popped) {
         if (pushed.length < popped.length) {
@@ -43,9 +43,9 @@ public class CheckStack {
     }
 
     public static void main(String[] args) {
-        CheckStack checkStack = new CheckStack();
+        ValidateStackSequences validateStackSequences = new ValidateStackSequences();
         int[] pushed = {1, 2, 3, 4, 5};
         int[] popped = {4,5,3,2,1};
-        Assert.assertTrue(checkStack.validateStackSequences(pushed, popped));
+        Assert.assertTrue(validateStackSequences.validateStackSequences(pushed, popped));
     }
 }

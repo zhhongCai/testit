@@ -34,7 +34,7 @@ import java.util.Map;
  * update table_a set aa=a1, bb=b1 where cc=c1;
  * update table_a set aa=a2, bb=b2 where cc=c2;
  *
- * @Author: zhenghong.cai
+ * @Author: theonecai
  * @Date: Create in 2020/5/28 10:41
  * @Description:
  */
