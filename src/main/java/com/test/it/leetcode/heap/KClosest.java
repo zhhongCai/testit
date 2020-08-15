@@ -2,6 +2,7 @@ package com.test.it.leetcode.heap;
 
 import com.test.it.algorithms.ArrayUtil;
 
+import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Random;
 
@@ -46,29 +47,27 @@ public class KClosest {
     }
 
     public int[][] kClosest2(int[][] points, int K) {
-        int p = partition(points, 0, points.length - 1);
-
+        int p = -1;
+        int start = 0;
+        int end = points.length - 1;
         while (p != K - 1) {
+            p = partition(points, start, end);
             if (p < K - 1) {
-                p = partition(points, p + 1, points.length - 1);
+                start = p + 1;
             } else if (p > K - 1){
-                p = partition(points, 0, p - 1);
+               end = p - 1;
             }
         }
 
-        int i = 0;
-        int[][] result = new int[K][2];
-        while (i < K) {
-            result[i] = points[i];
-            i++;
-        }
-
-        return result;
+        return Arrays.copyOf(points,  K);
     }
 
     private int partition(int[][] points, int start, int end) {
+        if (start == end) {
+            return start;
+        }
         //分区元素
-        int pivotIndex = start + (end - start > 0 ? new Random().nextInt(end - start) : 0);
+        int pivotIndex = start;
         int pivotVal = powAndSum(points[pivotIndex][0], points[pivotIndex][1]);
         int low = start;
         int high = end;
