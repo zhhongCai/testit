@@ -124,7 +124,7 @@ public class BinarySearch {
     }
 
     private static int getMid(int low, int high) {
-        return low + ((high - low) / 2);
+        return (low + high) / 2;
     }
 
     /**

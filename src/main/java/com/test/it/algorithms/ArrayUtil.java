@@ -18,10 +18,14 @@ public class ArrayUtil {
     }
 
     public static int[] randIntArray(int size) {
+        return randIntArray(size, size);
+    }
+
+    public static int[] randIntArray(int size, int bound) {
         int[] a = new int[size];
         Random random = new Random();
         for (int i = 0; i < size; i++) {
-            a[i] = random.nextInt(size);
+            a[i] = random.nextInt(bound);
         }
         return a;
     }
