@@ -39,29 +39,28 @@ public class ReversePairs {
     }
 
     private int merge(int[] arr, int start, int mid, int end) {
-        int i = start;
-        int j = mid + 1;
+        int leftIndex = start;
+        int rightIndex = mid + 1;
         int index = 0;
         int[] sortedArr = new int[end - start + 1];
         int count = 0;
-        while (i <= mid && j <= end) {
-            if (arr[i] <= arr[j]) {
-                sortedArr[index++] = arr[i++];
+        while (leftIndex <= mid && rightIndex <= end) {
+            if (arr[leftIndex] <= arr[rightIndex]) {
+                sortedArr[index++] = arr[leftIndex++];
             } else {
-                count += mid - i + 1;
-                sortedArr[index++] = arr[j++];
+                // 左边剩下比arr[rightIndex]大的个数（由arr[rightIndex]产生的逆序对数）
+                count += mid - leftIndex + 1;
+                sortedArr[index++] = arr[rightIndex++];
             }
         }
-        while (i <= mid) {
-            sortedArr[index++] = arr[i++];
+        while (leftIndex <= mid) {
+            sortedArr[index++] = arr[leftIndex++];
         }
-        while (j <= end) {
-            sortedArr[index++] = arr[j++];
+        while (rightIndex <= end) {
+            sortedArr[index++] = arr[rightIndex++];
         }
 
-        for (i = 0; i < sortedArr.length; i++) {
-            arr[start + i] = sortedArr[i];
-        }
+        System.arraycopy(sortedArr, 0, arr, start, sortedArr.length);
         return count;
     }
 

@@ -16,6 +16,7 @@ public class BinaryIndexedTree {
     public BinaryIndexedTree(int[] arr) {
         this.arr = arr;
         this.sum = new int[arr.length + 1];
+        // 前缀和
         int[] pre = new int[arr.length + 1];
         for (int i = 1; i <= arr.length; i++) {
             pre[i] = pre[i - 1] + arr[i - 1];
